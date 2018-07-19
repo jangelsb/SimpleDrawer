@@ -26,21 +26,19 @@
                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="5Es-NT-eF7" appends="YES" id="Hmx-un-UCo"/>
                                     <segue destination="RAi-AM-CdD" kind="embed" id="4yw-h4-7z9"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" red="0.2110475004" green="0.48943334820000001" blue="0.63636237380000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="drawer" destination="tHB-fR-ayn" id="zU5-Dq-ZEJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="5Es-NT-eF7">
-                    <connections>
-                        <action selector="panAction:" destination="BYZ-38-t0r" id="uby-7e-TXa"/>
-                    </connections>
-                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="60" y="88.605697151424295"/>
         </scene>
