@@ -15,10 +15,22 @@ class DrawerTestViewController: UIViewController {
     var drawerDragGR: UIPanGestureRecognizer?
     
     var embeddedVC: EmbeddedViewController?
+    var stackedVC: StackedViewController?
     
+    var drawerListener: DrawerListener?
+
     var prevY: CGFloat = 0
     
-    var currentDrawerState: DrawerState = .closed
+    var currentDrawerState: DrawerState = .closed {
+        didSet{
+            print("Drawer is now \(currentDrawerState)")
+            
+            if let drawerListener = self.drawerListener {
+                drawerListener.drawerStateChanged(to: currentDrawerState)
+            }
+        }
+    }
+        
     
     enum DrawerState {
         case closed
@@ -31,14 +43,21 @@ class DrawerTestViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
-        
+
         embeddedVC = self.childViewControllers.first as? EmbeddedViewController
+        stackedVC = self.childViewControllers.first as? StackedViewController
         
+        if let sVC = stackedVC {
+            drawerListener = sVC
+        }
+
         let panGesture = UIPanGestureRecognizer(target: self,
                                                 action: #selector(handleDrawerDrag))
         drawer.addGestureRecognizer(panGesture)
         drawerDragGR = panGesture
+        
+        
+        currentDrawerState = .closed 
     }
     
     @objc func handleDrawerDrag() {
@@ -83,7 +102,9 @@ class DrawerTestViewController: UIViewController {
 //
 //        }
         
-        currentDrawerState = .beingDragged
+        if currentDrawerState != .beingDragged {
+            currentDrawerState = .beingDragged
+        }
         
         switch panGesture.state {
         case .began:
