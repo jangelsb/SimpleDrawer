@@ -49,7 +49,8 @@ class StackedViewController: UIViewController, DrawerListener {
             
             if let topVC = topVC as? HistoryTableViewController {
                 topVC.tableView.isScrollEnabled = false
-                
+                topVC.scrollToLastRow(animated: false)
+
             }
         }
     }

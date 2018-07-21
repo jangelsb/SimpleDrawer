@@ -102,9 +102,8 @@ class DrawerTestViewController: UIViewController {
 //
 //        }
         
-        if currentDrawerState != .beingDragged {
-            currentDrawerState = .beingDragged
-        }
+        currentDrawerState = .beingDragged
+
         
         switch panGesture.state {
         case .began:
