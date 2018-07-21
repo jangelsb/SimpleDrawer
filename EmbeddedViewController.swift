@@ -26,6 +26,10 @@ class EmbeddedViewController: UIViewController {
     }
     
     func setAlpha(alpha: CGFloat) {
+        
+        print("alpha: \(alpha)")
+
+        
         topVC?.view.alpha = 1 - alpha
         bottomVC?.view.alpha = alpha
         

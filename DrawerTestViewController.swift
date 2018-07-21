@@ -15,6 +15,17 @@ class DrawerTestViewController: UIViewController {
     var drawerDragGR: UIPanGestureRecognizer?
     
     var embeddedVC: EmbeddedViewController?
+    
+    var prevY: CGFloat = 0
+    
+    var currentDrawerState: DrawerState = .closed
+    
+    enum DrawerState {
+        case closed
+        case beingDragged
+        case animating
+        case open
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,18 +48,42 @@ class DrawerTestViewController: UIViewController {
         let oldFrame = view.frame
         let touchLocationY = panGesture.location(in: self.view).y
         
-        if touchLocationY < 150 {
+        if currentDrawerState == .animating {
+            print("drawer is mid animation")
             
-            // initial position
-            animateTransition(fromY: 0, toY: 150, for: view, animateAlongside: {
-                if let embeddedVC = self.embeddedVC {
-                    embeddedVC.setAlpha(alpha: 0)
-                }
-            })
-            
+            // TODO: maybe cancel animation?
+        }
+        
+        // if new y is less 150, do nothing
+        if oldFrame.size.height + (touchLocationY - prevY) < 150 {
+            print("new y is smaller than initial height")
+            prevY = touchLocationY
+
             return
         }
+        
+        
+        // if new y is greater than the screen height, do nothing
+        if oldFrame.size.height + (touchLocationY - prevY) > self.view.frame.height {
+            print("new y is greater than screen height")
+            prevY = touchLocationY
 
+            return
+        }
+        
+        // if in expanded view and the user swipes down (+y) ignore
+//        if currentDrawerState == .open && (touchLocationY - prevY) >= 0 {
+//
+//            print("**** drawer is open, swiping is in: \(touchLocationY - prevY)")
+//
+//            prevY = touchLocationY
+//            return
+//        } else {
+//            // print("drawer is \(currentDrawerState), swiping is in: \(touchLocationY - prevY)")
+//
+//        }
+        
+        currentDrawerState = .beingDragged
         
         switch panGesture.state {
         case .began:
@@ -56,9 +91,17 @@ class DrawerTestViewController: UIViewController {
             print("began")
             
             
-            animateTransition(fromY: 0, toY: touchLocationY, for: view)
-            fallthrough
+//            this code is no longer needed because the animation is based on the finger movement now and not the literal position of the finger
+//            animateTransition(fromY: 0, toY: touchLocationY, for: view, animateAlongside: {
+//                if let embeddedVC = self.embeddedVC {
+//                    embeddedVC.setAlpha(alpha: 1 - (150 / oldFrame.size.height))
+//                    print(1 - (150 / oldFrame.size.height))
+//                }
+//            })
             
+            prevY = touchLocationY
+//            fallthrough
+
         case .changed:
             print("changed")
 //            applyTranslationY(panGesture.translation(in: view).y)
@@ -66,23 +109,23 @@ class DrawerTestViewController: UIViewController {
             
             
             if let embeddedVC = self.embeddedVC {
-                embeddedVC.setAlpha(alpha: 1 - (150 / oldFrame.size.height))
                 
-                print(1 - (150 / oldFrame.size.height))
+                // 150 = 0%
+                // maxY = 100%
+                
+                //  (newY - initH) / (maxY - initH)
+                embeddedVC.setAlpha(alpha: (oldFrame.size.height - 150) / (self.view.frame.height - 150))
             }
             
-            view.frame = CGRect(x: oldFrame.origin.x, y: oldFrame.origin.y, width: oldFrame.size.width, height: touchLocationY)
+            view.frame = CGRect(x: oldFrame.origin.x, y: oldFrame.origin.y, width: oldFrame.size.width, height: oldFrame.size.height + (touchLocationY - prevY))
             
-            
-            
-//            let drawerSpeedY = panGesture.velocity(in: view).y / self.view.frame.height
-//            print(drawerSpeedY)
+            prevY = touchLocationY
             
         case .ended:
             print("ended")
 
             
-            
+            prevY = 0
 //            let drawerSpeedY = panGesture.velocity(in: view).y / containerViewHeight
 //            let endingState = GeometryEvaluator.nextStateFrom(currentState: currentDrawerState,
 //                                                              speedY: drawerSpeedY,
@@ -91,25 +134,30 @@ class DrawerTestViewController: UIViewController {
 //                                                              configuration: configuration)
 //            animateTransition(to: endingState)
             
-            if panGesture.velocity(in: self.view).y > 200 {
+            currentDrawerState = .animating
+            
+            if panGesture.velocity(in: self.view).y > 150 {
                 animateTransition(fromY: 0, toY: self.view.frame.size.height, for: view, animateAlongside: {
                     if let embeddedVC = self.embeddedVC {
                         embeddedVC.setAlpha(alpha: 1)
                     }
+                }, animationCompletion: {
+                    self.currentDrawerState = .open
                 })
+                
                 
             } else {
                 
-                // initial position
-
+                // animate to the initial position
                 animateTransition(fromY: 0, toY: 150, for: view, animateAlongside: {
                     if let embeddedVC = self.embeddedVC {
                         embeddedVC.setAlpha(alpha: 0)
                     }
+                }, animationCompletion: {
+                    self.currentDrawerState = .closed
                 })
                 
                 
-               
             }
             
         case .cancelled:
@@ -118,13 +166,16 @@ class DrawerTestViewController: UIViewController {
 //                animateTransition(to: startingState)
 //            }
             
-            // initial position
+            // animate to the initial position
+            self.currentDrawerState = .animating
             animateTransition(fromY: 0, toY: 150, for: view, animateAlongside: {
                 if let embeddedVC = self.embeddedVC {
                     embeddedVC.setAlpha(alpha: 0)
                 }
+            }, animationCompletion: {
+                self.currentDrawerState = .closed
             })
-
+            
 
             
             print("cancelled")
@@ -138,7 +189,7 @@ class DrawerTestViewController: UIViewController {
     }
     
     
-    func animateTransition(fromY: CGFloat, toY: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil) {
+    func animateTransition(fromY: CGFloat, toY: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
 
 //        let (startingPositionY, endingPositionY) = positionsY(startingState: startingState,
 //                                                              endingState: endingState)
@@ -228,6 +279,8 @@ class DrawerTestViewController: UIViewController {
 //                                                info)
 //
 //            completion?()
+    
+            animationCompletion?()
         }
         
         animator.startAnimation()
