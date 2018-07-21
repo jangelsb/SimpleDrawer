@@ -194,7 +194,7 @@ class DrawerTestViewController: UIViewController {
 //        let (startingPositionY, endingPositionY) = positionsY(startingState: startingState,
 //                                                              endingState: endingState)
         
-        let animator = makeAnimator()
+        let animator = makeAnimator(fromY: fromY, toY: toY, for: view)
 //
 //        let presentingVC = presentingViewController
 //        let presentedVC = presentedViewController
@@ -286,9 +286,16 @@ class DrawerTestViewController: UIViewController {
         animator.startAnimation()
     }
     
-    private func makeAnimator() -> UIViewPropertyAnimator {
-        let duration = 0.4
+    private func makeAnimator(fromY: CGFloat, toY: CGFloat, for view: UIView) -> UIViewPropertyAnimator {
         
+        // TODO: does setting the duration do anything?
+        
+        // have the duration be proportional to the distance traveled
+        // borrowed from DrawerKit's AnimationSupport
+        let fractionToGo = abs(toY - fromY) / view.frame.height
+        let duration = 0.4 * TimeInterval(fractionToGo)
+        
+        // TODO: maybe make the duration be a fraction of the velocity 
         return UIViewPropertyAnimator(duration: duration,
                                       timingParameters: UISpringTimingParameters())
     }
