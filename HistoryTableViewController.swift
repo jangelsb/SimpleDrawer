@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol DrawerDelegate {
+    func closeDrawer()
+}
+
 class HistoryTableViewController: UITableViewController {
+    
+    
+    var drawerDelegate: DrawerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +48,18 @@ class HistoryTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        print("withVelocity: \(velocity.y)")
+        
+        
+        if (velocity.y > 0.5) {
+            // close drawer
+            
+            drawerDelegate?.closeDrawer()
+        }
+        
     }
 
     // MARK: - Table view data source

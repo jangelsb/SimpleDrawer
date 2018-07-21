@@ -8,7 +8,19 @@
 
 import UIKit
 
-class DrawerTestViewController: UIViewController {
+class DrawerTestViewController: UIViewController, DrawerDelegate {
+    
+    func closeDrawer() {
+        // animate to the initial position
+        animateTransition(fromY: 0, toY: 150, for: drawer, animateAlongside: {
+            if let embeddedVC = self.embeddedVC {
+                embeddedVC.setAlpha(alpha: 0)
+            }
+        }, animationCompletion: {
+            self.currentDrawerState = .closed
+        })
+    }
+    
 
     @IBOutlet var drawer: UIView!
     
@@ -49,6 +61,10 @@ class DrawerTestViewController: UIViewController {
         
         if let sVC = stackedVC {
             drawerListener = sVC
+            
+            if let historyVC = sVC.topVC as? HistoryTableViewController {
+                historyVC.drawerDelegate = self
+            }
         }
 
         let panGesture = UIPanGestureRecognizer(target: self,
@@ -83,7 +99,7 @@ class DrawerTestViewController: UIViewController {
         
         
         // if new y is greater than the screen height, do nothing
-        if oldFrame.size.height + (touchLocationY - prevY) > self.view.frame.height {
+        if oldFrame.size.height + (touchLocationY - prevY) > self.view.frame.height + 100 {
             print("new y is greater than screen height")
             prevY = touchLocationY
 
@@ -157,7 +173,8 @@ class DrawerTestViewController: UIViewController {
             currentDrawerState = .animating
             
             if panGesture.velocity(in: self.view).y > 150 {
-                animateTransition(fromY: 0, toY: self.view.frame.size.height, for: view, animateAlongside: {
+
+                animateTransition(fromY: 0, toY: self.view.frame.size.height + 100, for: view, animateAlongside: {
                     if let embeddedVC = self.embeddedVC {
                         embeddedVC.setAlpha(alpha: 1)
                     }
@@ -165,18 +182,9 @@ class DrawerTestViewController: UIViewController {
                     self.currentDrawerState = .open
                 })
                 
-                
             } else {
                 
-                // animate to the initial position
-                animateTransition(fromY: 0, toY: 150, for: view, animateAlongside: {
-                    if let embeddedVC = self.embeddedVC {
-                        embeddedVC.setAlpha(alpha: 0)
-                    }
-                }, animationCompletion: {
-                    self.currentDrawerState = .closed
-                })
-                
+               closeDrawer()
                 
             }
             
