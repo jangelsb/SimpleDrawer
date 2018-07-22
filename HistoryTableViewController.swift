@@ -54,7 +54,7 @@ class HistoryTableViewController: UITableViewController {
 //        print("withVelocity: \(velocity.y)")
         
         
-        if (velocity.y > 0.5) {
+        if ((tableView.visibleCells.last?.detailTextLabel?.text?.contains("BOTTOM"))! && velocity.y > 0.5) {
             // close drawer
             
             drawerDelegate?.closeDrawer()
