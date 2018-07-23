@@ -41,15 +41,17 @@ class StackedViewController: UIViewController, DrawerListener {
 //            self.scrollView.isScrollEnabled = true
             
             if let topVC = topVC as? HistoryTableViewController {
-                topVC.tableView.isScrollEnabled = true
+//                topVC.tableView.isScrollEnabled = true
             }
             
         default:
 //            self.scrollView.isScrollEnabled = false
             
             if let topVC = topVC as? HistoryTableViewController {
-                topVC.tableView.isScrollEnabled = false
-                topVC.scrollToLastRow(animated: false)
+//                topVC.tableView.isScrollEnabled = false
+                
+                // TODO: remove and use contentOffset?
+//                topVC.scrollToLastRow(animated: false)
 
             }
         }

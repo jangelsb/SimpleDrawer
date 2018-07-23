@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrawerTestViewController: UIViewController, DrawerDelegate {
+class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, DrawerDelegate {
     
     func closeDrawer() {
         // animate to the initial position
@@ -17,8 +17,9 @@ class DrawerTestViewController: UIViewController, DrawerDelegate {
                 embeddedVC.setAlpha(alpha: 0)
             }
         }, animationCompletion: {
-            self.currentDrawerState = .closed
+//            self.currentDrawerState = .closed
         })
+        self.currentDrawerState = .closed
     }
     
 
@@ -69,6 +70,7 @@ class DrawerTestViewController: UIViewController, DrawerDelegate {
 
         let panGesture = UIPanGestureRecognizer(target: self,
                                                 action: #selector(handleDrawerDrag))
+        panGesture.delegate = self
         drawer.addGestureRecognizer(panGesture)
         drawerDragGR = panGesture
         
@@ -82,6 +84,31 @@ class DrawerTestViewController: UIViewController, DrawerDelegate {
         
         let oldFrame = view.frame
         let touchLocationY = panGesture.location(in: self.view).y
+        let velocityY = panGesture.velocity(in: self.view).y
+        
+        
+        // drawer is open, we are NOT at the bottom, do nothing
+        if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == false {
+            return
+        }
+
+        
+//        if panGesture.velocity(in: self.view).y == 0 {
+//
+//            print("Zero velocity, doing nothing")
+//
+//
+//            return
+//        }
+
+        
+        // drawer is open, we are at the bottom and the user is trying to scroll up, do nothing
+        if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == true && velocityY > 0 {
+            
+            return
+            // enable scrolling
+            
+        }
         
         if currentDrawerState == .animating {
             print("drawer is mid animation")
@@ -179,9 +206,11 @@ class DrawerTestViewController: UIViewController, DrawerDelegate {
                         embeddedVC.setAlpha(alpha: 1)
                     }
                 }, animationCompletion: {
-                    self.currentDrawerState = .open
+//                    self.currentDrawerState = .open
                 })
                 
+                self.currentDrawerState = .open
+
             } else {
                 
                closeDrawer()
@@ -345,5 +374,48 @@ class DrawerTestViewController: UIViewController, DrawerDelegate {
 //
 //        return (startingPositionY, endingPositionY)
 //    }
+    
+    
+    
+//    func isItemsAvailabe(gesture: UIPanGestureRecognizer) -> Bool {
+//        if gesture.translation(in: drawer).y > 0 {
+//            // check if we have some values in down if yes return true else false
+//            return true
+//        } else if gesture.translation(in: drawer).y < 0 {
+//
+//            // check if we have some values in up if yes return true else false
+//        }
+//        return false
+//    }
+//
+//
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+//                           shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//
+//        guard let panGesture = drawerDragGR, let swipeGesture = (stackedVC?.topVC as? HistoryTableViewController)?.tableView.gestureRecognizers?[1] as? UIPanGestureRecognizer else { return false }
+//
+//        // Do not begin the pan until the swipe fails.
+//        if gestureRecognizer == panGesture &&
+//            otherGestureRecognizer == swipeGesture && isItemsAvailabe(gesture: otherGestureRecognizer as! UIPanGestureRecognizer) {
+//            return true
+//        }
+//        return false
+//    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+
+        
+        return true
+//
+//        guard let panGesture = drawerDragGR, let swipeGesture = (stackedVC?.topVC as? HistoryTableViewController)?.tableView.gestureRecognizers?.first else { return false }
+//
+//        if gestureRecognizer == panGesture &&
+//            otherGestureRecognizer == swipeGesture {
+//            return true
+//        }
+//
+//        return false
+
+    }
 }
 
