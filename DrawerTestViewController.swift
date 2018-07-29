@@ -89,6 +89,8 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         
         // drawer is open, we are NOT at the bottom, do nothing
         if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == false {
+            prevY = touchLocationY
+
             return
         }
 
@@ -105,6 +107,9 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         // drawer is open, we are at the bottom and the user is trying to scroll up, do nothing
         if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == true && velocityY > 0 {
             
+            
+            prevY = touchLocationY
+
             return
             // enable scrolling
             
@@ -129,6 +134,8 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         if oldFrame.size.height + (touchLocationY - prevY) > self.view.frame.height + 100 {
             print("new y is greater than screen height")
             prevY = touchLocationY
+            
+            currentDrawerState = .open
 
             return
         }
@@ -169,6 +176,14 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
             print("changed")
 //            applyTranslationY(panGesture.translation(in: view).y)
 //            panGesture.setTranslation(.zero, in: view)
+            
+            let vc = (stackedVC?.topVC as? HistoryTableViewController)!
+            
+            if panGesture.velocity(in: self.view).y < 0 && vc.atBottom == false {
+                //                vc.scrollToLastRow(animated: false)
+                vc.tableView.contentOffset.y = vc.tableView.contentSize.height - vc.tableView.frame.size.height
+                print("scroll to bottom while moving")
+            }
             
             
             if let embeddedVC = self.embeddedVC {
@@ -403,19 +418,25 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
 //    }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-
         
-        return true
+        
+        
+//        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
+//        let direction = gesture.velocity(in: view).y
 //
-//        guard let panGesture = drawerDragGR, let swipeGesture = (stackedVC?.topVC as? HistoryTableViewController)?.tableView.gestureRecognizers?.first else { return false }
+//        let scrollView = ((stackedVC?.topVC as? HistoryTableViewController)?.tableView)!
+//        let atBottom = scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height
 //
-//        if gestureRecognizer == panGesture &&
-//            otherGestureRecognizer == swipeGesture {
+//        let atBottom2 = abs((scrollView.contentSize.height - scrollView.frame.size.height) - scrollView.contentOffset.y) < 0.001
+//
+//        if atBottom2 && direction < 0 {
 //            return true
+//        } else {
+//            return false
 //        }
 //
-//        return false
-
+        
+        return true
     }
 }
 

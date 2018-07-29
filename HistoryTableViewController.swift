@@ -17,7 +17,11 @@ class HistoryTableViewController: UITableViewController {
     
     var drawerDelegate: DrawerDelegate?
     
-    var atBottom = false
+    var atBottom = false {
+        didSet {
+            print("At bottom: \(atBottom)")
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,14 +117,15 @@ class HistoryTableViewController: UITableViewController {
         
         
         if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) {
+//            if abs((scrollView.contentSize.height - scrollView.frame.size.height) - scrollView.contentOffset.y) < 0.001 {
+
             
-            print( "View scrolled to the bottom" )
 //            self.tableView.isScrollEnabled = false
             
             atBottom = true
 
         } else {
-            atBottom = false
+            atBottom = false            
         }
     }
     
