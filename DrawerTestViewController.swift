@@ -16,6 +16,12 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
             if let embeddedVC = self.embeddedVC {
                 embeddedVC.setAlpha(alpha: 0)
             }
+            
+            if let vc = self.stackedVC?.topVC as? HistoryTableViewController {
+                vc.tableView.setContentOffset(CGPoint(x: 0, y: vc.tableView.contentSize.height - vc.tableView.frame.size.height), animated: false)
+            }
+            
+            
         }, animationCompletion: {
 //            self.currentDrawerState = .closed
         })
@@ -71,6 +77,7 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         let panGesture = UIPanGestureRecognizer(target: self,
                                                 action: #selector(handleDrawerDrag))
         panGesture.delegate = self
+        panGesture.maximumNumberOfTouches = 1
         drawer.addGestureRecognizer(panGesture)
         drawerDragGR = panGesture
         
@@ -126,6 +133,9 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
             print("new y is smaller than initial height")
             prevY = touchLocationY
 
+            
+            currentDrawerState = .closed
+            
             return
         }
         
@@ -179,11 +189,7 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
             
             let vc = (stackedVC?.topVC as? HistoryTableViewController)!
             
-            if panGesture.velocity(in: self.view).y < 0 && vc.atBottom == false {
-                //                vc.scrollToLastRow(animated: false)
-                vc.tableView.contentOffset.y = vc.tableView.contentSize.height - vc.tableView.frame.size.height
-                print("scroll to bottom while moving")
-            }
+
             
             
             if let embeddedVC = self.embeddedVC {
@@ -196,6 +202,15 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
             }
             
             view.frame = CGRect(x: oldFrame.origin.x, y: oldFrame.origin.y, width: oldFrame.size.width, height: oldFrame.size.height + (touchLocationY - prevY))
+            
+            
+            if panGesture.velocity(in: self.view).y < 0 && vc.atBottom == false {
+                //                vc.scrollToLastRow(animated: false)
+//                vc.tableView.contentOffset.y -= (touchLocationY - prevY)
+//                vc.tableView.contentOffset.y = vc.tableView.contentSize.height - vc.tableView.frame.size.height
+                vc.tableView.setContentOffset(CGPoint(x: 0, y: vc.tableView.contentSize.height - vc.tableView.frame.size.height), animated: false)
+                print("scroll to bottom while moving")
+            }
             
             prevY = touchLocationY
             
