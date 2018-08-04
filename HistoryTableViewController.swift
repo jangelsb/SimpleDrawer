@@ -10,6 +10,9 @@ import UIKit
 
 protocol DrawerDelegate {
     func closeDrawer()
+    
+    var currentDrawerState: DrawerTestViewController.DrawerState {get}
+
 }
 
 class HistoryTableViewController: UITableViewController {
@@ -20,6 +23,12 @@ class HistoryTableViewController: UITableViewController {
     var atBottom = false {
         didSet {
             print("At bottom: \(atBottom)")
+        }
+    }
+    
+    var shouldScroll = true {
+        didSet {
+            print("shouldScroll: \(shouldScroll)")
         }
     }
 
@@ -87,11 +96,15 @@ class HistoryTableViewController: UITableViewController {
 
         
         if atBottom && scrollView.panGestureRecognizer.translation(in: scrollView.superview).y < 0 {
-//            scrollView.isScrollEnabled = false
-//            return
+            self.shouldScroll = false
+            
+            
+            return
         }
         
         
+        self.shouldScroll = true
+
         
 //        atBottom = false
 
@@ -99,6 +112,11 @@ class HistoryTableViewController: UITableViewController {
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
+        
+//        if shouldScroll == false {
+//
+//            return
+//        }
         
         
 //        if (atBottom && scrollView.contentOffset.y > 60) {
@@ -121,6 +139,9 @@ class HistoryTableViewController: UITableViewController {
 
             
 //            self.tableView.isScrollEnabled = false
+            
+//            scrollView.contentOffset = CGPoint(x: 0.0, y: scrollView.contentSize.height - scrollView.frame.size.height)
+
             
             atBottom = true
 
