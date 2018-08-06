@@ -71,7 +71,6 @@
                                                 </connections>
                                             </containerView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.36834646900000001" green="1" blue="0.18571588920000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="Q9x-9m-T0U" firstAttribute="top" secondItem="wFF-m5-Bm6" secondAttribute="bottom" id="A6d-b4-73r"/>
                                             <constraint firstAttribute="trailing" secondItem="Q9x-9m-T0U" secondAttribute="trailing" id="BWt-rS-uqx"/>
@@ -83,6 +82,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" red="1" green="0.2527923882" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="woV-I4-2mn" secondAttribute="bottom" id="4RK-kR-YSb"/>
                                     <constraint firstItem="woV-I4-2mn" firstAttribute="top" secondItem="473-pL-nV6" secondAttribute="top" id="CZa-zg-FB6"/>

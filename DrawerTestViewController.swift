@@ -12,13 +12,23 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
     
     func closeDrawer() {
         // animate to the initial position
-        animateTransition(fromY: 0, toY: drawerInitOriginY, for: drawer)
+        
+        
+//        if let offset = drawerOffSetEek {
+            animateTransitionOriginAndHeight(fromY: 0, toYOrigin: drawerInitOriginY, toYHeight: drawerInitHeight, for: drawer)
+//            self.drawerOffSetEek = nil
+//        } else {
+//            animateTransitionOriginY(fromY: 0, toY: drawerInitOriginY, for: drawer)
+//        }
+        
         self.currentDrawerState = .closed
     }
     
     func openDrawer() {
         // animate to the ending position
-        animateTransition(fromY: 0, toY: 0, for: drawer)
+        
+        
+        animateTransitionOriginY(fromY: 0, toY: 0, for: drawer)
         self.currentDrawerState = .open
     }
     
@@ -26,7 +36,11 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
     @IBOutlet var drawer: UIView!
     
     var drawerDragGR: UIPanGestureRecognizer?
+
+    var innerScrollPanGR: UIPanGestureRecognizer?
     
+//    var drawerOffSetEek: CGFloat?
+
     var stackedVC: StackedViewController?
     
     var drawerListener: DrawerListener?
@@ -46,12 +60,45 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
             switch currentDrawerState {
             case .closed:
                 scrollView.isScrollEnabled = false
+                
+                scrollView.bounces = false
+
+                
                 break
             case .open:
+
                 scrollView.isScrollEnabled = true
+                scrollView.bounces = true
+                break
+                
+            case .beingDragged:
+                
+                // TODO: check if mid bounc
+                if scrollView.isBouncingBottom {
+                    print("Bouncing!!!!")
+//                    let bottom = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.size.height)
+//
+//                    let step = CGPoint(x: 0, y: min((scrollView.contentOffset.y - (drawerDragGR?.velocity(in: self.view).y)!), bottom.y))
+//
+//                    scrollView.setContentOffset(step, animated: false)
+//
+//
+////
+////                    scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom
+//
+//
+
+//                    scrollView.bounces = false
+
+                    
+                } else {
+                    scrollView.bounces = false
+                }
                 break
             default:
-                scrollView.isScrollEnabled = false
+//                scrollView.isScrollEnabled = false
+                
+                
                 break
             }
         }
@@ -72,7 +119,8 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
     }
 
     var drawerInitOriginY: CGFloat = 0.0
-    
+    var drawerInitHeight: CGFloat = 0.0
+
     var drawerOriginY: CGFloat {
         return drawer.frame.minY
     }
@@ -105,37 +153,74 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         currentDrawerState = .closed
         
         self.drawerInitOriginY = drawerClosedHeight - (self.view.frame.maxY + drawerClosedHeight)
+        
 
         drawer.frame = CGRect(x: self.view.frame.origin.x, y: drawerInitOriginY, width: self.view.frame.size.width, height: drawerOpenHeight)
+        
+        self.drawerInitHeight = drawerOpenHeight
+        
+        let scrollView = ((stackedVC?.topVC as? HistoryTableViewController)?.tableView)!
+
+//        scrollView.panGestureRecognizer.addTarget(self, action: #selector(handleScrollDrag))
+        
+        innerScrollPanGR = scrollView.panGestureRecognizer
+        
+        innerScrollPanGR?.maximumNumberOfTouches = 1
+
     }
     
     @objc func handleDrawerDrag() {
 
-        guard let panGesture = drawerDragGR, let view = panGesture.view else { return }
+        guard let panGesture = drawerDragGR, let view = panGesture.view, let scrollView = (stackedVC?.topVC as?HistoryTableViewController)?.tableView else { return }
         
-        let oldFrame = view.frame
+        var oldFrame = view.frame
         let touchLocationY = panGesture.location(in: self.view).y
         let velocityY = panGesture.velocity(in: self.view).y
         
         // drawer is open, we are NOT at the bottom, do nothing
-        if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == false {
+        if currentDrawerState == .open && scrollView.atBottomStrict == false && scrollView.isBouncingBottom == false {
             prevY = touchLocationY
             return
         }
 
         // drawer is open, we are at the bottom and the user is trying to scroll up, do nothing
-        if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == true && velocityY > 0 {
+        if currentDrawerState == .open && scrollView.atBottomStrict == true && velocityY > 0 {
             prevY = touchLocationY
             return
+        }
+        
+        
+        // only do this if passed the bottom
+        if currentDrawerState == .open && scrollView.isBouncingBottom && velocityY <= 0 {
+            
+            
+            // animate the drawer up to the bottom of the scroll view somehow
+            // animate up while simultaneously scroll the scrollView down?
+            let offset = scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height)
+
+            animateTransitionHeight(fromY: 0, toY: oldFrame.maxY - offset, for: view, animationCompletion: {
+                scrollView.bounces = false
+                
+                
+                if self.drawer.frame.height != self.drawerInitHeight {
+                    self.drawer.frame = CGRect(x: self.drawer.frame.origin.x, y: self.drawer.frame.origin.y - offset, width: self.drawer.frame.size.width, height: self.drawerInitHeight)
+                    
+                    oldFrame = self.drawer.frame
+                    
+                }
+                
+            })
         }
         
         if currentDrawerState == .animating {
             print("drawer is mid animation")
             // TODO: maybe cancel animation?
+            
+//            return
         }
         
         // if new y is less drawerClosedHeight, do nothing
-        if drawerHeightYPos + (touchLocationY - prevY) < drawerClosedHeight {
+        if drawerHeightYPos + (touchLocationY - prevY) < drawerClosedHeight && velocityY <= 0{
             print("new y is smaller than initial height")
 
             prevY = touchLocationY
@@ -145,7 +230,7 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         }
         
         // if new y is greater than the drawerOpenHeight, do nothing
-        if drawerHeightYPos + (touchLocationY - prevY) > drawerOpenHeight {
+        if drawerHeightYPos + (touchLocationY - prevY) > drawerOpenHeight && velocityY > 0 {
             print("new y is greater than screen height")
             
             prevY = touchLocationY
@@ -203,50 +288,40 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         }
     }
     
-    
-    func animateTransition(fromY: CGFloat, toY: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
+   
+    @objc func handleScrollDrag() {
+       
+        guard let panGesture = innerScrollPanGR, let view = panGesture.view else { return }
 
-//        let (startingPositionY, endingPositionY) = positionsY(startingState: startingState,
-//                                                              endingState: endingState)
+        
+        switch panGesture.state {
+        case .began:
+            print("handleScrollDrag began")
+            fallthrough
+        case .changed:
+            print("handleScrollDrag changed")
+            
+            
+            
+            
+        case .ended:
+            print("handleScrollDrag ended")
+            
+        case .cancelled:
+            print("handleScrollDrag cancelled")
+            
+        default:
+            
+            print("handleScrollDrag default")
+            
+            break
+        }
+    }
+
+    func animateTransitionOriginY(fromY: CGFloat, toY: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
+
         
         let animator = makeAnimator(fromY: fromY, toY: toY, for: view)
-//
-//        let presentingVC = presentingViewController
-//        let presentedVC = presentedViewController
-//
-//        let presentedViewFrame = presentedView?.frame ?? .zero
-//
-//        var startingFrame = presentedViewFrame
-//        startingFrame.origin.y = startingPositionY
-//
-//        var endingFrame = presentedViewFrame
-//        endingFrame.origin.y = endingPositionY
-//
-//        let geometry = AnimationSupport.makeGeometry(containerBounds: containerViewBounds,
-//                                                     startingFrame: startingFrame,
-//                                                     endingFrame: endingFrame,
-//                                                     presentingVC: presentingVC,
-//                                                     presentedVC: presentedVC)
-//
-//        let info = AnimationSupport.makeInfo(startDrawerState: startingState,
-//                                             targetDrawerState: endingState,
-//                                             configuration,
-//                                             geometry,
-//                                             animator.duration,
-//                                             endingPositionY < startingPositionY)
-//
-//        let endingHandleViewAlpha = handleViewAlpha(at: endingState)
-//        let autoAnimatesDimming = configuration.handleViewConfiguration?.autoAnimatesDimming ?? false
-//        if autoAnimatesDimming { self.handleView?.alpha = handleViewAlpha(at: startingState) }
-//
-//        let presentingAnimationActions = self.presentingDrawerAnimationActions
-//        let presentedAnimationActions = self.presentedDrawerAnimationActions
-//
-//        AnimationSupport.clientPrepareViews(presentingDrawerAnimationActions: presentingAnimationActions,
-//                                            presentedDrawerAnimationActions: presentedAnimationActions,
-//                                            info)
-//
-//        targetDrawerState = endingState
         
         animator.addAnimations {
             view.frame = CGRect(x: view.frame.origin.x, y: toY, width: view.frame.size.width, height: view.frame.size.height)
@@ -254,47 +329,43 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         }
         
         animator.addCompletion { endingPosition in
-//            if autoAnimatesDimming { self.handleView?.alpha = endingHandleViewAlpha }
-//
-//            let isStartingStateCollapsed = (startingState == .collapsed)
-//            let isEndingStateCollapsed = (endingState == .collapsed)
-//
-//            let shouldDismiss =
-//                (isStartingStateCollapsed && endingPosition == .start) ||
-//                    (isEndingStateCollapsed && endingPosition == .end)
-//
-//            if shouldDismiss {
-//                self.presentedViewController.dismiss(animated: true)
-//            }
-//
-//            let isStartingStateCollapsedOrFullyExpanded =
-//                (startingState == .collapsed || startingState == .fullyExpanded)
-//
-//            let isEndingStateCollapsedOrFullyExpanded =
-//                (endingState == .collapsed || endingState == .fullyExpanded)
-//
-//            let shouldSetCornerRadiusToZero =
-//                (isEndingStateCollapsedOrFullyExpanded && endingPosition == .end) ||
-//                    (isStartingStateCollapsedOrFullyExpanded && endingPosition == .start)
-//
-//            if maxCornerRadius != 0 && shouldSetCornerRadiusToZero {
-//                self.currentDrawerCornerRadius = 0
-//            }
-//
-//            if endingPosition != .end {
-//                self.targetDrawerState = GeometryEvaluator.drawerState(for: self.currentDrawerY,
-//                                                                       drawerPartialHeight: self.drawerPartialY,
-//                                                                       containerViewHeight: self.containerViewHeight,
-//                                                                       configuration: self.configuration)
-//            }
-//
-//            AnimationSupport.clientCleanupViews(presentingDrawerAnimationActions: presentingAnimationActions,
-//                                                presentedDrawerAnimationActions: presentedAnimationActions,
-//                                                endingPosition,
-//                                                info)
-//
-//            completion?()
     
+            animationCompletion?()
+        }
+        
+        animator.startAnimation()
+    }
+    
+    func animateTransitionHeight(fromY: CGFloat, toY: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
+        
+        
+        let animator = makeAnimator(fromY: fromY, toY: toY, for: view)
+        
+        animator.addAnimations {
+            view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: view.frame.size.width, height: toY)
+            animateAlongside?()
+        }
+        
+        animator.addCompletion { endingPosition in
+            
+            animationCompletion?()
+        }
+        
+        animator.startAnimation()
+    }
+    
+    func animateTransitionOriginAndHeight(fromY: CGFloat, toYOrigin: CGFloat, toYHeight: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
+        
+        
+        let animator = makeAnimator(fromY: fromY, toY: toYOrigin, for: view)
+        
+        animator.addAnimations {
+            view.frame = CGRect(x: view.frame.origin.x, y: toYOrigin, width: view.frame.size.width, height: toYHeight)
+            animateAlongside?()
+        }
+        
+        animator.addCompletion { endingPosition in
+            
             animationCompletion?()
         }
         
@@ -314,74 +385,45 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate, D
         return UIViewPropertyAnimator(duration: duration,
                                       timingParameters: UISpringTimingParameters())
     }
-    
-//    private func positionsY(startingState: DrawerState,
-//                            endingState: DrawerState) -> (starting: CGFloat, ending: CGFloat) {
-//        let drawerFullY = configuration.fullExpansionBehaviour.drawerFullY
-//        let startingPositionY =
-//            GeometryEvaluator.drawerPositionY(for: startingState,
-//                                              drawerPartialHeight: drawerPartialHeight,
-//                                              containerViewHeight: containerViewHeight,
-//                                              drawerFullY: drawerFullY)
-//
-//        let endingPositionY =
-//            GeometryEvaluator.drawerPositionY(for: endingState,
-//                                              drawerPartialHeight: drawerPartialHeight,
-//                                              containerViewHeight: containerViewHeight,
-//                                              drawerFullY: drawerFullY)
-//
-//        return (startingPositionY, endingPositionY)
-//    }
-    
-    
-    
-//    func isItemsAvailabe(gesture: UIPanGestureRecognizer) -> Bool {
-//        if gesture.translation(in: drawer).y > 0 {
-//            // check if we have some values in down if yes return true else false
-//            return true
-//        } else if gesture.translation(in: drawer).y < 0 {
-//
-//            // check if we have some values in up if yes return true else false
-//        }
-//        return false
-//    }
-//
-//
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-//                           shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//
-//        guard let panGesture = drawerDragGR, let swipeGesture = (stackedVC?.topVC as? HistoryTableViewController)?.tableView.gestureRecognizers?[1] as? UIPanGestureRecognizer else { return false }
-//
-//        // Do not begin the pan until the swipe fails.
-//        if gestureRecognizer == panGesture &&
-//            otherGestureRecognizer == swipeGesture && isItemsAvailabe(gesture: otherGestureRecognizer as! UIPanGestureRecognizer) {
-//            return true
-//        }
-//        return false
-//    }
-    
+ 
     
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        
-        
-//        let gesture = (gestureRecognizer as! UIPanGestureRecognizer)
-//        let direction = gesture.velocity(in: view).y
-//
-//        let scrollView = ((stackedVC?.topVC as? HistoryTableViewController)?.tableView)!
-//        let atBottom = scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height
-//
-//        let atBottom2 = abs((scrollView.contentSize.height - scrollView.frame.size.height) - scrollView.contentOffset.y) < 0.001
-//
-//        if atBottom2 && direction < 0 {
+
+        // only shouldRecognizeSimultaneously if it is this pan gesture and the scrollView
+        if gestureRecognizer == drawerDragGR && otherGestureRecognizer == innerScrollPanGR {
+            return true
+        }
+
+        return false
+    }
+
+    
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if gestureRecognizer == drawerDragGR && otherGestureRecognizer == innerScrollPanGR {
 //            return true
-//        } else {
+//        }
+//        return false
+//    }
+//
+//    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        // drawer is open, we are NOT at the bottom, do nothing
+////        if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == false {
+//
+//
+//        let velocityY = drawerDragGR!.velocity(in: self.view).y
+//
+//        if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == true && velocityY > 0 {
 //            return false
 //        }
 //
-        
-        return true
-    }
+//
+//        // drawer is open, we are at the bottom and the user is trying to scroll up, do nothing
+//        if currentDrawerState == .open && (stackedVC?.topVC as? HistoryTableViewController)?.atBottom == false {
+//            return false
+//        }
+//
+//        return true
+//    }
 }
 
