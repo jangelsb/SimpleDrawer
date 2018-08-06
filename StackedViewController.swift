@@ -8,11 +8,7 @@
 
 import UIKit
 
-protocol DrawerListener {
-    func drawerStateChanged(to drawerState: DrawerTestViewController.DrawerState)
-}
-
-class StackedViewController: UIViewController, DrawerListener {
+class StackedViewController: UIViewController {
     
 
     var topVC: UIViewController?
@@ -33,28 +29,6 @@ class StackedViewController: UIViewController, DrawerListener {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func drawerStateChanged(to drawerState: DrawerTestViewController.DrawerState) {
-        switch drawerState {
-        case .open:
-//            self.scrollView.isScrollEnabled = true
-            
-            if let topVC = topVC as? HistoryTableViewController {
-//                topVC.tableView.isScrollEnabled = true
-            }
-            
-        default:
-//            self.scrollView.isScrollEnabled = false
-            
-            if let topVC = topVC as? HistoryTableViewController {
-//                topVC.tableView.isScrollEnabled = false
-                
-                // TODO: remove and use contentOffset?
-//                topVC.scrollToLastRow(animated: false)
-
-            }
-        }
     }
     
     /*

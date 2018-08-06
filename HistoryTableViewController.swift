@@ -8,29 +8,7 @@
 
 import UIKit
 
-protocol DrawerDelegate {
-    func closeDrawer()
-    
-    var currentDrawerState: DrawerTestViewController.DrawerState {get}
-
-}
-
 class HistoryTableViewController: UITableViewController {
-    
-    
-    var drawerDelegate: DrawerDelegate?
-    
-    var atBottom = false {
-        didSet {
-            print("At bottom: \(atBottom)")
-        }
-    }
-    
-    var shouldScroll = true {
-        didSet {
-            print("shouldScroll: \(shouldScroll)")
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,105 +42,6 @@ class HistoryTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//        print("withVelocity: \(velocity.y)")
-        
-        
-        if ((tableView.visibleCells.last?.detailTextLabel?.text?.contains("BOTTOM")) ?? false && velocity.y > 0.5) {
-//        if (tableView.visibleCells.last?.detailTextLabel?.text?.contains("BOTTOM"))! {
-
-            // close drawer
-            
-//            print("scrollViewWillEndDragging: at bottom??")
-
-            
-//             drawerDelegate?.closeDrawer()
-        }
-        
-    }
-    
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        print("scrollViewWillBeginDragging")
-        
-//        if atBottom && scrollView.panGestureRecognizer.translation(in: scrollView.superview).y == 0 {
-//            scrollView.isScrollEnabled = false
-//            return
-//        }
-        
-        
-//        if ([scrollView.panGestureRecognizer translationInView:scrollView.superview].x > 0) {
-
-
-        
-        if atBottom && scrollView.panGestureRecognizer.translation(in: scrollView.superview).y < 0 {
-            self.shouldScroll = false
-            
-            
-            return
-        }
-        
-        
-        self.shouldScroll = true
-
-        
-//        atBottom = false
-
-    }
-    
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        
-//        if shouldScroll == false {
-//
-//            return
-//        }
-        
-        
-//        if (atBottom && scrollView.contentOffset.y > 60) {
-//
-//            scrollView.setContentOffset(CGPoint(x: 0, y: 60), animated: false)
-//            return
-//        }
-        
-        
-        
-//        if atBottom && scrollView.panGestureRecognizer.translation(in: scrollView.superview).y < 0 {
-//            scrollView.isScrollEnabled = false
-//            
-//            return
-//        }
-        
-        
-        if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.frame.size.height) {
-//            if abs((scrollView.contentSize.height - scrollView.frame.size.height) - scrollView.contentOffset.y) < 0.001 {
-
-            
-//            self.tableView.isScrollEnabled = false
-            
-//            scrollView.contentOffset = CGPoint(x: 0.0, y: scrollView.contentSize.height - scrollView.frame.size.height)
-
-            
-            atBottom = true
-
-        } else {
-            atBottom = false            
-        }
-    }
-    
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if (tableView.visibleCells.last?.detailTextLabel?.text?.contains("BOTTOM")) ?? false {
-            print("end: at bottom??")
-            
-            
-//            atBottom = true
-//            self.tableView.isScrollEnabled = false
-        }
-    }
-    
-//    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        atBottom = false
-//    }
 
     // MARK: - Table view data source
 

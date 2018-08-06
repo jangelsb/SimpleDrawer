@@ -8,6 +8,7 @@
 
 import UIKit
 
+// taken from https://stackoverflow.com/a/42951161
 extension UIScrollView {
     var isBouncing: Bool {
         return isBouncingTop || isBouncingLeft || isBouncingBottom || isBouncingRight
