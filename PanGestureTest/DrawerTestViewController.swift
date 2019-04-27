@@ -36,7 +36,7 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate {
         didSet{
             print("Drawer is now \(currentDrawerState)")
             
-            let scrollView = ((stackedVC?.topVC as? HistoryTableViewController)?.tableView)!
+            let scrollView = ((stackedVC?.topVC?.childViewControllers.first as? HistoryTableViewController)?.tableView)!
 
             switch currentDrawerState {
             case .closed:
@@ -107,7 +107,7 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.drawerInitHeight = drawerOpenHeight
         
-        let scrollView = ((stackedVC?.topVC as? HistoryTableViewController)?.tableView)!
+        let scrollView = ((stackedVC?.topVC?.childViewControllers.first as? HistoryTableViewController)?.tableView)!
         innerScrollPanGR = scrollView.panGestureRecognizer
         innerScrollPanGR?.maximumNumberOfTouches = 1
 
@@ -115,7 +115,7 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc func handleDrawerDrag() {
 
-        guard let panGesture = drawerDragGR, let view = panGesture.view, let scrollView = (stackedVC?.topVC as?HistoryTableViewController)?.tableView else { return }
+        guard let panGesture = drawerDragGR, let view = panGesture.view, let scrollView = (stackedVC?.topVC?.childViewControllers.first as? HistoryTableViewController)?.tableView else { return }
         
         var oldFrame = view.frame
         let touchLocationY = panGesture.location(in: self.view).y
@@ -179,6 +179,9 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate {
             
             prevY = touchLocationY
             currentDrawerState = .open
+            
+//            openDrawer()
+            view.frame = CGRect(x: view.frame.origin.x, y: 0, width: view.frame.size.width, height: drawerInitHeight)
             return
         }
         

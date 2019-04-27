@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		EA098F6420FFE76600774227 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA098F6320FFE76600774227 /* HistoryTableViewController.swift */; };
-		EA22BC9920FFF7400079EF38 /* RedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA22BC9820FFF7400079EF38 /* RedViewController.swift */; };
-		EA22BC9B21003E6A0079EF38 /* EmbeddedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA22BC9A21003E6A0079EF38 /* EmbeddedViewController.swift */; };
 		EA6303102117D0D500804D46 /* UIScrollView+Bounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */; };
 		EA78892C20F29B47009C9371 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78892B20F29B47009C9371 /* AppDelegate.swift */; };
 		EA78893120F29B47009C9371 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA78892F20F29B47009C9371 /* Main.storyboard */; };
@@ -22,8 +20,6 @@
 
 /* Begin PBXFileReference section */
 		EA098F6320FFE76600774227 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
-		EA22BC9820FFF7400079EF38 /* RedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedViewController.swift; sourceTree = "<group>"; };
-		EA22BC9A21003E6A0079EF38 /* EmbeddedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedViewController.swift; sourceTree = "<group>"; };
 		EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Bounce.swift"; sourceTree = "<group>"; };
 		EA78892820F29B47009C9371 /* PanGestureTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanGestureTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA78892B20F29B47009C9371 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,14 +63,12 @@
 			isa = PBXGroup;
 			children = (
 				EA78892B20F29B47009C9371 /* AppDelegate.swift */,
-				EA22BC9820FFF7400079EF38 /* RedViewController.swift */,
+				EAE0F0F4210128A10042BBFF /* DrawerTestViewController.swift */,
 				EA098F6320FFE76600774227 /* HistoryTableViewController.swift */,
 				EA78892F20F29B47009C9371 /* Main.storyboard */,
 				EA78893220F29B48009C9371 /* Assets.xcassets */,
 				EA78893420F29B48009C9371 /* LaunchScreen.storyboard */,
 				EA78893720F29B48009C9371 /* Info.plist */,
-				EA22BC9A21003E6A0079EF38 /* EmbeddedViewController.swift */,
-				EAE0F0F4210128A10042BBFF /* DrawerTestViewController.swift */,
 				EACDB5772103CDFF00CC7CDE /* StackedViewController.swift */,
 				EACDB5792103E96F00CC7CDE /* scrolling.storyboard */,
 				EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */,
@@ -157,8 +151,6 @@
 				EA6303102117D0D500804D46 /* UIScrollView+Bounce.swift in Sources */,
 				EACDB5782103CDFF00CC7CDE /* StackedViewController.swift in Sources */,
 				EAE0F0F5210128A10042BBFF /* DrawerTestViewController.swift in Sources */,
-				EA22BC9920FFF7400079EF38 /* RedViewController.swift in Sources */,
-				EA22BC9B21003E6A0079EF38 /* EmbeddedViewController.swift in Sources */,
 				EA78892C20F29B47009C9371 /* AppDelegate.swift in Sources */,
 				EA098F6420FFE76600774227 /* HistoryTableViewController.swift in Sources */,
 			);

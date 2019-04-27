@@ -13,7 +13,6 @@ class StackedViewController: UIViewController {
 
     var topVC: UIViewController?
     var bottomVC: UIViewController?
-    @IBOutlet var scrollView: UIScrollView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
