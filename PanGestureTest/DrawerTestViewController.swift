@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate {
+class SimpleDrawer: UIGestureRecognizerDelegate {
     
     func closeDrawer() {
         // animate to the initial position
@@ -90,7 +90,7 @@ class DrawerTestViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        stackedVC = self.childViewControllers.first as? StackedViewController
+        stackedVC = self.childViewControllers.first?.childViewControllers.first as? StackedViewController
 
         let panGesture = UIPanGestureRecognizer(target: self,
                                                 action: #selector(handleDrawerDrag))
