@@ -20,7 +20,7 @@ class SimpleViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let drawerContent = storyboard.instantiateViewController(withIdentifier: "HistoryTableViewControllerTest1") as! HistoryTableViewController
+        let drawerContent = storyboard.instantiateViewController(withIdentifier: "NavigationViewControllerTest1") as! UINavigationController
         
         //
         drawerContent.view.frame = self.view.frame
@@ -28,7 +28,7 @@ class SimpleViewController: UIViewController {
         let drawerInfo = SimpleDrawerInfo(drawerInView: self.view,
                                           drawerContentViewController: drawerContent,
                                           drawerHandleView: drawerHandle,
-                                          embeddedScrollView: drawerContent.tableView)
+                                          embeddedScrollView: (drawerContent.childViewControllers.first as! HistoryTableViewController).tableView)
         
         drawer = SimpleDrawer(with: drawerInfo)
         
