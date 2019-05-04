@@ -48,10 +48,19 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
                     scrollView.isScrollEnabled = false
                     scrollView.bounces = false
                     
+                    if let navVC = self.drawerInfo.drawerContentViewController as? UINavigationController {
+                      navVC.setNavigationBarHidden(true, animated: false)
+                    }
+                    
                     break
                 case .open:
                     scrollView.isScrollEnabled = true
                     scrollView.bounces = true
+                    
+                    if let navVC = self.drawerInfo.drawerContentViewController as? UINavigationController {
+                      navVC.setNavigationBarHidden(false, animated: true)
+                    }
+                    
                     break
                     
                 case .beingDragged:
