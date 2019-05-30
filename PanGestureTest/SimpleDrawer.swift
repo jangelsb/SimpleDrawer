@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct SimpleDrawerInfo {
+public struct SimpleDrawerInfo {
 //    - [ ] DrawerContentVC
 //    - [ ] DrawerHandleView
 //    - Use it’s height
@@ -19,11 +19,18 @@ struct SimpleDrawerInfo {
     var drawerHandleView: UIView
     
     var embeddedScrollView: UIScrollView?
+    
+    public init(drawerInView: UIView, drawerContentViewController: UIViewController, drawerHandleView: UIView, embeddedScrollView: UIScrollView?) {
+        self.drawerInView = drawerInView
+        self.drawerContentViewController = drawerContentViewController
+        self.drawerHandleView = drawerHandleView
+        self.embeddedScrollView = embeddedScrollView
+    }
 }
 
-class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
+public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     
-    var drawerInfo: SimpleDrawerInfo
+    public var drawerInfo: SimpleDrawerInfo
     
     var drawerView: UIView!
 //    var combindedDrawer: UIView!
@@ -34,6 +41,7 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     
     var prevY: CGFloat = 0
     
+    var drawerScrollViewBottomDefaultOffset: CGFloat = 0.0
     var drawerHandleStartPoint: CGFloat = 0.0
     var drawerHandleEndPoint: CGFloat = 0.0
 
@@ -49,16 +57,19 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
                     scrollView.bounces = false
                     
                     if let navVC = self.drawerInfo.drawerContentViewController as? UINavigationController {
-                      navVC.setNavigationBarHidden(true, animated: false)
+                        navVC.setNavigationBarHidden(true, animated: false)
                     }
                     
+                    // TODO: maybe better?
+//                    scrollView.scrollToBottom()
+
                     break
                 case .open:
                     scrollView.isScrollEnabled = true
                     scrollView.bounces = true
                     
                     if let navVC = self.drawerInfo.drawerContentViewController as? UINavigationController {
-                      navVC.setNavigationBarHidden(false, animated: true)
+                        navVC.setNavigationBarHidden(false, animated: true)
                     }
                     
                     break
@@ -109,8 +120,7 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 //        return combindedDrawer.frame.maxY
 //    }
 
-    init(with drawerInfo: SimpleDrawerInfo) {
-        
+    public init(with drawerInfo: SimpleDrawerInfo) {
         
         self.drawerInfo = drawerInfo
         
@@ -124,8 +134,27 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         
         // make new view that contains the handle and the content
         
+        // TODO: needed as of right now for the calc
+        self.drawerInfo.drawerHandleView.removeAllConstraints()
+        
         let h = self.drawerInfo.drawerHandleView.frame.height + self.drawerInfo.drawerContentViewController.view.frame.height
         let y = self.drawerInfo.drawerHandleView.frame.maxY - h
+        
+        // maybe?
+        // https://stackoverflow.com/a/30491911
+//        self.drawerInfo.drawerHandleView.remove all contraints
+        
+        // TODO: investigate how to keep the bottom inset of the scroll view... h
+//        if let scrollView = self.drawerInfo.embeddedScrollView {
+//
+//             drawerScrollViewBottomDefaultOffset = scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height)
+//        }
+        
+//        if let navVC = self.drawerInfo.drawerContentViewController as? UINavigationController {
+//            navVC.setNavigationBarHidden(true, animated: false)
+//            navVC.setNavigationBarHidden(false, animated: false)
+//        }
+       
         
         let oldHandleFrame = self.drawerInfo.drawerHandleView.frame
 //        let drawerView = UIView(frame: CGRect(x: 0, y: y, width: self.drawerInfo.drawerHandleView.frame.width, height: h))
@@ -134,6 +163,8 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         
         
         self.drawerInfo.drawerHandleView.removeFromSuperview()
+        
+//        self.drawerInfo.drawerHandleView.frame = oldHandleFrame
         
         drawerView.addSubview(self.drawerInfo.drawerContentViewController.view)
         drawerView.addSubview(self.drawerInfo.drawerHandleView)
@@ -151,7 +182,7 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         
         self.drawerInfo.drawerContentViewController.view.frame.origin.y = 0
         self.drawerInfo.drawerHandleView.frame.origin.y = self.drawerInfo.drawerContentViewController.view.frame.maxY
-        
+
 
         
         
@@ -243,18 +274,19 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         // only do this if passed the bottom
         // drawer is open, we are at the bottom, the user is trying to scroll up and the scroll view is currently bouncing
         //      animate the drawer up and restore the the height
-        if currentDrawerState == .open && scrollView.isBouncingBottom && velocityY <= 0 {
-            
-            
-            // animate the drawer up to the bottom of the scroll view by setting the height of the drawer its height minus offset
-            // and then restoring after if needed (the drawer could be already closed or open)
-            let offset = scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height)
-            let prevHeight = view.frame.height
-            
-            animateTransitionHeight(fromHeight: 0, toHeight: view.frame.maxY - offset, for: view, animateAlongside: {
-                view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y - offset, width: view.frame.size.width, height: prevHeight)
-            })
-        }
+//        if currentDrawerState == .open && scrollView.isBouncingBottom && velocityY <= 0 {
+//            
+//            
+//            // animate the drawer up to the bottom of the scroll view by setting the height of the drawer its height minus offset
+//            // and then restoring after if needed (the drawer could be already closed or open)
+//            let offset = scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height)
+//            let prevHeight = view.frame.height
+//            
+//            // maybe self.drawerScrollViewBottomDefaultOffset - offset?
+//            animateTransitionHeight(fromHeight: 0, toHeight: view.frame.maxY - offset, for: view, animateAlongside: {
+//                view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y - offset, width: view.frame.size.width, height: prevHeight)
+//            })
+//        }
         
         if currentDrawerState == .animating {
             print("drawer is mid animation")
@@ -339,7 +371,7 @@ class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     
     
     // MARK: - UIGestureRecognizer
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         
         // only shouldRecognizeSimultaneously if it is this pan gesture and the scrollView
         if gestureRecognizer == drawerDragGR && otherGestureRecognizer == innerScrollPanGR {

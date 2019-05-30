@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		EA098F6420FFE76600774227 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA098F6320FFE76600774227 /* HistoryTableViewController.swift */; };
 		EA27E92E22760D70008D57C0 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA27E92D22760D70008D57C0 /* SimpleViewController.swift */; };
+		EA2B5E47229FA5CB00E714CD /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */; };
+		EA2B5E48229FA5FD00E714CD /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */; };
 		EA6303102117D0D500804D46 /* UIScrollView+Bounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */; };
 		EA78892C20F29B47009C9371 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78892B20F29B47009C9371 /* AppDelegate.swift */; };
 		EA78893120F29B47009C9371 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA78892F20F29B47009C9371 /* Main.storyboard */; };
@@ -17,11 +19,38 @@
 		EACDB5782103CDFF00CC7CDE /* StackedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACDB5772103CDFF00CC7CDE /* StackedViewController.swift */; };
 		EACDB57A2103E96F00CC7CDE /* scrolling.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EACDB5792103E96F00CC7CDE /* scrolling.storyboard */; };
 		EAE0F0F5210128A10042BBFF /* SimpleDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE0F0F4210128A10042BBFF /* SimpleDrawer.swift */; };
+		EAE3D8FE229E2AFA00206D14 /* BasicDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE3D8FC229E2AFA00206D14 /* BasicDrawer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EAE3D90C229E459100206D14 /* SimpleDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE0F0F4210128A10042BBFF /* SimpleDrawer.swift */; };
+		EAE3D90D229E45B300206D14 /* UIScrollView+Bounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EAE3D8FF229E2AFA00206D14 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA78892020F29B47009C9371 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAE3D8F9229E2AF900206D14;
+			remoteInfo = BasicDrawer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EAE3D906229E2AFA00206D14 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		EA098F6320FFE76600774227 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 		EA27E92D22760D70008D57C0 /* SimpleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
+		EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Bounce.swift"; sourceTree = "<group>"; };
 		EA78892820F29B47009C9371 /* PanGestureTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PanGestureTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA78892B20F29B47009C9371 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -32,10 +61,20 @@
 		EACDB5772103CDFF00CC7CDE /* StackedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedViewController.swift; sourceTree = "<group>"; };
 		EACDB5792103E96F00CC7CDE /* scrolling.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = scrolling.storyboard; sourceTree = "<group>"; };
 		EAE0F0F4210128A10042BBFF /* SimpleDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrawer.swift; sourceTree = "<group>"; };
+		EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimpleDrawer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAE3D8FC229E2AFA00206D14 /* BasicDrawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicDrawer.h; sourceTree = "<group>"; };
+		EAE3D8FD229E2AFA00206D14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		EA78892520F29B47009C9371 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAE3D8F7229E2AF900206D14 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -49,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				EA78892A20F29B47009C9371 /* PanGestureTest */,
+				EAE3D8FB229E2AFA00206D14 /* BasicDrawer */,
 				EA78892920F29B47009C9371 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -57,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				EA78892820F29B47009C9371 /* PanGestureTest.app */,
+				EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,11 +116,32 @@
 				EACDB5792103E96F00CC7CDE /* scrolling.storyboard */,
 				EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */,
 				EA27E92D22760D70008D57C0 /* SimpleViewController.swift */,
+				EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */,
 			);
 			path = PanGestureTest;
 			sourceTree = "<group>";
 		};
+		EAE3D8FB229E2AFA00206D14 /* BasicDrawer */ = {
+			isa = PBXGroup;
+			children = (
+				EAE3D8FC229E2AFA00206D14 /* BasicDrawer.h */,
+				EAE3D8FD229E2AFA00206D14 /* Info.plist */,
+			);
+			path = BasicDrawer;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		EAE3D8F5229E2AF900206D14 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAE3D8FE229E2AFA00206D14 /* BasicDrawer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		EA78892720F29B47009C9371 /* PanGestureTest */ = {
@@ -89,15 +151,35 @@
 				EA78892420F29B47009C9371 /* Sources */,
 				EA78892520F29B47009C9371 /* Frameworks */,
 				EA78892620F29B47009C9371 /* Resources */,
+				EAE3D906229E2AFA00206D14 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EAE3D900229E2AFA00206D14 /* PBXTargetDependency */,
 			);
 			name = PanGestureTest;
 			productName = PanGestureTest;
 			productReference = EA78892820F29B47009C9371 /* PanGestureTest.app */;
 			productType = "com.apple.product-type.application";
+		};
+		EAE3D8F9229E2AF900206D14 /* SimpleDrawer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAE3D905229E2AFA00206D14 /* Build configuration list for PBXNativeTarget "SimpleDrawer" */;
+			buildPhases = (
+				EAE3D8F5229E2AF900206D14 /* Headers */,
+				EAE3D8F6229E2AF900206D14 /* Sources */,
+				EAE3D8F7229E2AF900206D14 /* Frameworks */,
+				EAE3D8F8229E2AF900206D14 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleDrawer;
+			productName = BasicDrawer;
+			productReference = EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -111,6 +193,9 @@
 				TargetAttributes = {
 					EA78892720F29B47009C9371 = {
 						CreatedOnToolsVersion = 9.4.1;
+					};
+					EAE3D8F9229E2AF900206D14 = {
+						CreatedOnToolsVersion = 10.2.1;
 					};
 				};
 			};
@@ -128,6 +213,7 @@
 			projectRoot = "";
 			targets = (
 				EA78892720F29B47009C9371 /* PanGestureTest */,
+				EAE3D8F9229E2AF900206D14 /* SimpleDrawer */,
 			);
 		};
 /* End PBXProject section */
@@ -144,6 +230,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EAE3D8F8229E2AF900206D14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -154,13 +247,32 @@
 				EA6303102117D0D500804D46 /* UIScrollView+Bounce.swift in Sources */,
 				EACDB5782103CDFF00CC7CDE /* StackedViewController.swift in Sources */,
 				EA27E92E22760D70008D57C0 /* SimpleViewController.swift in Sources */,
+				EA2B5E47229FA5CB00E714CD /* UIView+Constraints.swift in Sources */,
 				EAE0F0F5210128A10042BBFF /* SimpleDrawer.swift in Sources */,
 				EA78892C20F29B47009C9371 /* AppDelegate.swift in Sources */,
 				EA098F6420FFE76600774227 /* HistoryTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EAE3D8F6229E2AF900206D14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA2B5E48229FA5FD00E714CD /* UIView+Constraints.swift in Sources */,
+				EAE3D90C229E459100206D14 /* SimpleDrawer.swift in Sources */,
+				EAE3D90D229E45B300206D14 /* UIScrollView+Bounce.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EAE3D900229E2AFA00206D14 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAE3D8F9229E2AF900206D14 /* SimpleDrawer */;
+			targetProxy = EAE3D8FF229E2AFA00206D14 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		EA78892F20F29B47009C9371 /* Main.storyboard */ = {
@@ -299,6 +411,7 @@
 		EA78893B20F29B48009C9371 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YFZ5LYLJPF;
@@ -317,6 +430,7 @@
 		EA78893C20F29B48009C9371 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YFZ5LYLJPF;
@@ -329,6 +443,67 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EAE3D903229E2AFA00206D14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = YFZ5LYLJPF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BasicDrawer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = jangelsb.BasicDrawer;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		EAE3D904229E2AFA00206D14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = YFZ5LYLJPF;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BasicDrawer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = jangelsb.BasicDrawer;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -349,6 +524,15 @@
 			buildConfigurations = (
 				EA78893B20F29B48009C9371 /* Debug */,
 				EA78893C20F29B48009C9371 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAE3D905229E2AFA00206D14 /* Build configuration list for PBXNativeTarget "SimpleDrawer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAE3D903229E2AFA00206D14 /* Debug */,
+				EAE3D904229E2AFA00206D14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
