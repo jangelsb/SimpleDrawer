@@ -135,7 +135,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         // make new view that contains the handle and the content
         
         // TODO: needed as of right now for the calc
-        self.drawerInfo.drawerHandleView.removeAllConstraints()
+        self.drawerInfo.drawerHandleView.removeConstraintsForAllSubViews()
         
         let h = self.drawerInfo.drawerHandleView.frame.height + self.drawerInfo.drawerContentViewController.view.frame.height
         let y = self.drawerInfo.drawerHandleView.frame.maxY - h

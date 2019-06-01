@@ -20,48 +20,24 @@ extension UIView {
         var _superview = self.superview
         
         while let superview = _superview {
-            for constraint in superview.constraints {
-                
-                if let first = constraint.firstItem as? UIView, first == self {
-                    superview.removeConstraint(constraint)
-//                    (constraint.secondItem as? UIView)?.translatesAutoresizingMaskIntoConstraints = true
-                }
-                
-                if let second = constraint.secondItem as? UIView, second == self {
-                    superview.removeConstraint(constraint)
-//                    (constraint.firstItem as? UIView)?.translatesAutoresizingMaskIntoConstraints = true
-                }
+            
+            let constraints = superview.constraints.filter { (constraint) -> Bool in
+                return constraint.firstItem as? UIView == self || constraint.secondItem as? UIView == self
             }
             
+            superview.removeConstraints(constraints)
             _superview = superview.superview
         }
         
         self.removeConstraints(self.constraints)
         self.translatesAutoresizingMaskIntoConstraints = true
     }
+    
+    func removeConstraintsForAllSubViews() {
+        for view in self.subviews {
+            view.removeConstraintsForAllSubViews()
+        }
+        
+        removeAllConstraints()
+    }
 }
-
-//
-//public func removeAllConstraints() {
-//    var _superview: UIView? = self
-//    
-//    while let superview = _superview {
-//        for constraint in superview.constraints {
-//            
-//            if let first = constraint.firstItem as? UIView, first == self {
-//                superview.removeConstraint(constraint)
-//                //                    (constraint.secondItem as? UIView)?.translatesAutoresizingMaskIntoConstraints = true
-//            }
-//            
-//            if let second = constraint.secondItem as? UIView, second == self {
-//                superview.removeConstraint(constraint)
-//                //                    (constraint.firstItem as? UIView)?.translatesAutoresizingMaskIntoConstraints = true
-//            }
-//        }
-//        
-//        _superview = superview.superview
-//    }
-//    
-//    //        self.removeConstraints(self.constraints)
-//    self.translatesAutoresizingMaskIntoConstraints = true
-//}
