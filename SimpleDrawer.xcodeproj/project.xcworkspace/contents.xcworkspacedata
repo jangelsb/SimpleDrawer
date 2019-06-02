@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:PanGestureTest.xcodeproj">
+      location = "self:SimpleDrawer.xcodeproj">
    </FileRef>
 </Workspace>
