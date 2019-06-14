@@ -28,7 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EA4D716922B4639D002004A5"
+               BuildableName = "SimpleDrawerTests.xctest"
+               BlueprintName = "SimpleDrawerTests"
+               ReferencedContainer = "container:SimpleDrawer.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "EAE3D8F9229E2AF900206D14"
+            BuildableName = "SimpleDrawer.framework"
+            BlueprintName = "SimpleDrawer"
+            ReferencedContainer = "container:SimpleDrawer.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
