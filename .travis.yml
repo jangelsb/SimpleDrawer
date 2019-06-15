@@ -1,4 +1,5 @@
 language: swift
+osx_image: xcode10.1
 xcode_project: SimpleDrawer.xcodeproj # path to your xcodeproj folder
 xcode_scheme: SimpleDrawerTests
 xcode_destination: platform=iOS Simulator,OS=11.4,name=iPhone X
