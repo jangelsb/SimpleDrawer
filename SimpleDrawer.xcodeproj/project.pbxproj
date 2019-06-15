@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		EA2B5E48229FA5FD00E714CD /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */; };
-		EA4D716D22B4639D002004A5 /* SimpleDrawerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D716C22B4639D002004A5 /* SimpleDrawerTests.swift */; };
 		EA4D716F22B4639D002004A5 /* SimpleDrawer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */; };
+		EAE1820822B5832F001A1F03 /* SimpleDrawerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D716C22B4639D002004A5 /* SimpleDrawerTests.swift */; };
 		EAE3D8FE229E2AFA00206D14 /* SimpleDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE3D8FC229E2AFA00206D14 /* SimpleDrawer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EAE3D90C229E459100206D14 /* SimpleDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE0F0F4210128A10042BBFF /* SimpleDrawer.swift */; };
 		EAE3D90D229E45B300206D14 /* UIScrollView+Bounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */; };
@@ -230,7 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA4D716D22B4639D002004A5 /* SimpleDrawerTests.swift in Sources */,
+				EAE1820822B5832F001A1F03 /* SimpleDrawerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

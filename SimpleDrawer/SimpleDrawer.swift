@@ -248,7 +248,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         // only do this if passed the bottom
         // drawer is open, we are at the bottom, the user is trying to scroll up and the scroll view is currently bouncing
         //      animate the drawer up and restore the the height
-//        if currentDrawerState == .open && scrollView.isBouncingBottom && velocityY <= 0 {
+       if currentDrawerState == .open && scrollView.isBouncingBottom && velocityY <= 0 {
 //
 //
 //            // animate the drawer up to the bottom of the scroll view by setting the height of the drawer its height minus offset
@@ -269,7 +269,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 ////
 ////                }
 //            })
-//        }
+       }
         
         // only do this if passed the bottom
         // drawer is open, we are at the bottom, the user is trying to scroll up and the scroll view is currently bouncing
@@ -298,12 +298,13 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         let nextY = drawerView.frame.minY + (touchLocationY - prevY)
         
         // if new y is less drawerClosedHeight and the user is scrolling up (trying to close the drawer), do nothing
-        if nextY < self.drawerHandleStartPoint && velocityY <= 0{
+        if nextY < self.drawerHandleStartPoint && velocityY <= 0 {
 //            if drawerHeightYPos + (touchLocationY - prevY) < drawerClosedMaxY && velocityY <= 0{
             print("new y is smaller than initial height")
 
             prevY = touchLocationY
             currentDrawerState = .closed
+            closeDrawer()
             return
         }
         
