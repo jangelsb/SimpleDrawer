@@ -8,4 +8,5 @@ An iOS Framework that allows for a view controller to be embedded in a "drawer" 
 * Margin / safe area fixes
 * Optional drawer handle indicator
 * When a user swipes up really fast when the drawer is open but the scroll view is not at the bottom, causing the scroll view inside the drawer to bounce really high. Then swiping up again the drawer to animate closed. The handle should animate with the velocity of the swipe, but currently teleports to the location of the gesture.
+* iPad Support
 * *Bonus: specify orientation (pull up or pull down drawer)*
