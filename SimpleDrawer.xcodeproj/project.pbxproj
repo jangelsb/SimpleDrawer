@@ -9,8 +9,16 @@
 /* Begin PBXBuildFile section */
 		EA2B5E48229FA5FD00E714CD /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */; };
 		EA4D716F22B4639D002004A5 /* SimpleDrawer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */; };
+		EA84F91822B6B2C10018D447 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84F91722B6B2C10018D447 /* AppDelegate.swift */; };
+		EA84F91D22B6B2C10018D447 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA84F91B22B6B2C10018D447 /* Main.storyboard */; };
+		EA84F91F22B6B2C20018D447 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA84F91E22B6B2C20018D447 /* Assets.xcassets */; };
+		EA84F92222B6B2C20018D447 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA84F92022B6B2C20018D447 /* LaunchScreen.storyboard */; };
+		EA84F92D22B6B2C20018D447 /* SimpleDrawerDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84F92C22B6B2C20018D447 /* SimpleDrawerDemoUITests.swift */; };
+		EA84F93D22B6B3C00018D447 /* EmbeddedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84F93922B6B3C00018D447 /* EmbeddedTableViewController.swift */; };
+		EA84F93F22B6B3C00018D447 /* SimpleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84F93B22B6B3C00018D447 /* SimpleViewController.swift */; };
+		EA84F94422B6B41B0018D447 /* SimpleDrawer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */; };
+		EA84F94522B6B4950018D447 /* SimpleDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = EA84F93522B6B3680018D447 /* SimpleDrawer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EAE1820822B5832F001A1F03 /* SimpleDrawerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D716C22B4639D002004A5 /* SimpleDrawerTests.swift */; };
-		EAE3D8FE229E2AFA00206D14 /* SimpleDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = EAE3D8FC229E2AFA00206D14 /* SimpleDrawer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EAE3D90C229E459100206D14 /* SimpleDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE0F0F4210128A10042BBFF /* SimpleDrawer.swift */; };
 		EAE3D90D229E45B300206D14 /* UIScrollView+Bounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */; };
 /* End PBXBuildFile section */
@@ -23,27 +31,43 @@
 			remoteGlobalIDString = EAE3D8F9229E2AF900206D14;
 			remoteInfo = SimpleDrawer;
 		};
+		EA84F92922B6B2C20018D447 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA78892020F29B47009C9371 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EA84F91422B6B2C10018D447;
+			remoteInfo = SimpleDrawerDemo;
+		};
+		EA84F94122B6B3F00018D447 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA78892020F29B47009C9371 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EA84F91422B6B2C10018D447;
+			remoteInfo = SimpleDrawerDemo;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		EA098F6320FFE76600774227 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
-		EA27E92D22760D70008D57C0 /* SimpleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		EA4D716A22B4639D002004A5 /* SimpleDrawerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleDrawerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA4D716C22B4639D002004A5 /* SimpleDrawerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrawerTests.swift; sourceTree = "<group>"; };
 		EA4D716E22B4639D002004A5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Bounce.swift"; sourceTree = "<group>"; };
-		EA78892B20F29B47009C9371 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EA78893020F29B47009C9371 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		EA78893220F29B48009C9371 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		EA78893520F29B48009C9371 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		EA78893720F29B48009C9371 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EACDB5772103CDFF00CC7CDE /* StackedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedViewController.swift; sourceTree = "<group>"; };
-		EACDB5792103E96F00CC7CDE /* scrolling.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = scrolling.storyboard; sourceTree = "<group>"; };
+		EA84F91522B6B2C10018D447 /* SimpleDrawerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleDrawerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA84F91722B6B2C10018D447 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EA84F91C22B6B2C10018D447 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EA84F91E22B6B2C20018D447 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EA84F92122B6B2C20018D447 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EA84F92322B6B2C20018D447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA84F92822B6B2C20018D447 /* SimpleDrawerDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleDrawerDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA84F92C22B6B2C20018D447 /* SimpleDrawerDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrawerDemoUITests.swift; sourceTree = "<group>"; };
+		EA84F92E22B6B2C20018D447 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA84F93522B6B3680018D447 /* SimpleDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleDrawer.h; sourceTree = "<group>"; };
+		EA84F93622B6B3680018D447 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA84F93922B6B3C00018D447 /* EmbeddedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbeddedTableViewController.swift; sourceTree = "<group>"; };
+		EA84F93B22B6B3C00018D447 /* SimpleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleViewController.swift; sourceTree = "<group>"; };
 		EAE0F0F4210128A10042BBFF /* SimpleDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleDrawer.swift; sourceTree = "<group>"; };
 		EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SimpleDrawer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EAE3D8FC229E2AFA00206D14 /* SimpleDrawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimpleDrawer.h; sourceTree = "<group>"; };
-		EAE3D8FD229E2AFA00206D14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +76,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA4D716F22B4639D002004A5 /* SimpleDrawer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA84F91222B6B2C10018D447 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA84F94422B6B41B0018D447 /* SimpleDrawer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA84F92522B6B2C20018D447 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,9 +117,11 @@
 			isa = PBXGroup;
 			children = (
 				EA78892A20F29B47009C9371 /* SimpleDrawer */,
-				EAE3D8FB229E2AFA00206D14 /* SimpleDrawerFramework */,
 				EA4D716B22B4639D002004A5 /* SimpleDrawerTests */,
+				EA84F91622B6B2C10018D447 /* SimpleDrawerDemo */,
+				EA84F92B22B6B2C20018D447 /* SimpleDrawerDemoUITests */,
 				EA78892920F29B47009C9371 /* Products */,
+				EA84F94322B6B41B0018D447 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +130,8 @@
 			children = (
 				EAE3D8FA229E2AF900206D14 /* SimpleDrawer.framework */,
 				EA4D716A22B4639D002004A5 /* SimpleDrawerTests.xctest */,
+				EA84F91522B6B2C10018D447 /* SimpleDrawerDemo.app */,
+				EA84F92822B6B2C20018D447 /* SimpleDrawerDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,29 +139,43 @@
 		EA78892A20F29B47009C9371 /* SimpleDrawer */ = {
 			isa = PBXGroup;
 			children = (
-				EA78892B20F29B47009C9371 /* AppDelegate.swift */,
+				EA84F93622B6B3680018D447 /* Info.plist */,
+				EA84F93522B6B3680018D447 /* SimpleDrawer.h */,
 				EAE0F0F4210128A10042BBFF /* SimpleDrawer.swift */,
-				EA098F6320FFE76600774227 /* HistoryTableViewController.swift */,
-				EA78892F20F29B47009C9371 /* Main.storyboard */,
-				EA78893220F29B48009C9371 /* Assets.xcassets */,
-				EA78893420F29B48009C9371 /* LaunchScreen.storyboard */,
-				EA78893720F29B48009C9371 /* Info.plist */,
-				EACDB5772103CDFF00CC7CDE /* StackedViewController.swift */,
-				EACDB5792103E96F00CC7CDE /* scrolling.storyboard */,
 				EA63030F2117D0D500804D46 /* UIScrollView+Bounce.swift */,
-				EA27E92D22760D70008D57C0 /* SimpleViewController.swift */,
 				EA2B5E46229FA5CB00E714CD /* UIView+Constraints.swift */,
 			);
 			path = SimpleDrawer;
 			sourceTree = "<group>";
 		};
-		EAE3D8FB229E2AFA00206D14 /* SimpleDrawerFramework */ = {
+		EA84F91622B6B2C10018D447 /* SimpleDrawerDemo */ = {
 			isa = PBXGroup;
 			children = (
-				EAE3D8FC229E2AFA00206D14 /* SimpleDrawer.h */,
-				EAE3D8FD229E2AFA00206D14 /* Info.plist */,
+				EA84F91722B6B2C10018D447 /* AppDelegate.swift */,
+				EA84F93B22B6B3C00018D447 /* SimpleViewController.swift */,
+				EA84F93922B6B3C00018D447 /* EmbeddedTableViewController.swift */,
+				EA84F91B22B6B2C10018D447 /* Main.storyboard */,
+				EA84F91E22B6B2C20018D447 /* Assets.xcassets */,
+				EA84F92022B6B2C20018D447 /* LaunchScreen.storyboard */,
+				EA84F92322B6B2C20018D447 /* Info.plist */,
 			);
-			path = SimpleDrawerFramework;
+			path = SimpleDrawerDemo;
+			sourceTree = "<group>";
+		};
+		EA84F92B22B6B2C20018D447 /* SimpleDrawerDemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				EA84F92C22B6B2C20018D447 /* SimpleDrawerDemoUITests.swift */,
+				EA84F92E22B6B2C20018D447 /* Info.plist */,
+			);
+			path = SimpleDrawerDemoUITests;
+			sourceTree = "<group>";
+		};
+		EA84F94322B6B41B0018D447 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,7 +185,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAE3D8FE229E2AFA00206D14 /* SimpleDrawer.h in Headers */,
+				EA84F94522B6B4950018D447 /* SimpleDrawer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,11 +204,47 @@
 			);
 			dependencies = (
 				EA4D717122B4639D002004A5 /* PBXTargetDependency */,
+				EA84F94222B6B3F00018D447 /* PBXTargetDependency */,
 			);
 			name = SimpleDrawerTests;
 			productName = SimpleDrawerTests;
 			productReference = EA4D716A22B4639D002004A5 /* SimpleDrawerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EA84F91422B6B2C10018D447 /* SimpleDrawerDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA84F92F22B6B2C20018D447 /* Build configuration list for PBXNativeTarget "SimpleDrawerDemo" */;
+			buildPhases = (
+				EA84F91122B6B2C10018D447 /* Sources */,
+				EA84F91222B6B2C10018D447 /* Frameworks */,
+				EA84F91322B6B2C10018D447 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleDrawerDemo;
+			productName = SimpleDrawerDemo;
+			productReference = EA84F91522B6B2C10018D447 /* SimpleDrawerDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EA84F92722B6B2C20018D447 /* SimpleDrawerDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA84F93222B6B2C20018D447 /* Build configuration list for PBXNativeTarget "SimpleDrawerDemoUITests" */;
+			buildPhases = (
+				EA84F92422B6B2C20018D447 /* Sources */,
+				EA84F92522B6B2C20018D447 /* Frameworks */,
+				EA84F92622B6B2C20018D447 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EA84F92A22B6B2C20018D447 /* PBXTargetDependency */,
+			);
+			name = SimpleDrawerDemoUITests;
+			productName = SimpleDrawerDemoUITests;
+			productReference = EA84F92822B6B2C20018D447 /* SimpleDrawerDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		EAE3D8F9229E2AF900206D14 /* SimpleDrawer */ = {
 			isa = PBXNativeTarget;
@@ -184,6 +277,13 @@
 					EA4D716922B4639D002004A5 = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
+					EA84F91422B6B2C10018D447 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
+					EA84F92722B6B2C20018D447 = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = EA84F91422B6B2C10018D447;
+					};
 					EAE3D8F9229E2AF900206D14 = {
 						CreatedOnToolsVersion = 10.2.1;
 					};
@@ -204,12 +304,31 @@
 			targets = (
 				EAE3D8F9229E2AF900206D14 /* SimpleDrawer */,
 				EA4D716922B4639D002004A5 /* SimpleDrawerTests */,
+				EA84F91422B6B2C10018D447 /* SimpleDrawerDemo */,
+				EA84F92722B6B2C20018D447 /* SimpleDrawerDemoUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EA4D716822B4639D002004A5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA84F91322B6B2C10018D447 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA84F92222B6B2C20018D447 /* LaunchScreen.storyboard in Resources */,
+				EA84F91F22B6B2C20018D447 /* Assets.xcassets in Resources */,
+				EA84F91D22B6B2C10018D447 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA84F92622B6B2C20018D447 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -234,6 +353,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EA84F91122B6B2C10018D447 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA84F93F22B6B3C00018D447 /* SimpleViewController.swift in Sources */,
+				EA84F91822B6B2C10018D447 /* AppDelegate.swift in Sources */,
+				EA84F93D22B6B3C00018D447 /* EmbeddedTableViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA84F92422B6B2C20018D447 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA84F92D22B6B2C20018D447 /* SimpleDrawerDemoUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EAE3D8F6229E2AF900206D14 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -252,21 +389,31 @@
 			target = EAE3D8F9229E2AF900206D14 /* SimpleDrawer */;
 			targetProxy = EA4D717022B4639D002004A5 /* PBXContainerItemProxy */;
 		};
+		EA84F92A22B6B2C20018D447 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EA84F91422B6B2C10018D447 /* SimpleDrawerDemo */;
+			targetProxy = EA84F92922B6B2C20018D447 /* PBXContainerItemProxy */;
+		};
+		EA84F94222B6B3F00018D447 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EA84F91422B6B2C10018D447 /* SimpleDrawerDemo */;
+			targetProxy = EA84F94122B6B3F00018D447 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		EA78892F20F29B47009C9371 /* Main.storyboard */ = {
+		EA84F91B22B6B2C10018D447 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				EA78893020F29B47009C9371 /* Base */,
+				EA84F91C22B6B2C10018D447 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		EA78893420F29B48009C9371 /* LaunchScreen.storyboard */ = {
+		EA84F92022B6B2C20018D447 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				EA78893520F29B48009C9371 /* Base */,
+				EA84F92122B6B2C20018D447 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -429,6 +576,92 @@
 			};
 			name = Release;
 		};
+		EA84F93022B6B2C20018D447 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YFZ5LYLJPF;
+				INFOPLIST_FILE = SimpleDrawerDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jangelsb.simpledrawerdemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EA84F93122B6B2C20018D447 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YFZ5LYLJPF;
+				INFOPLIST_FILE = SimpleDrawerDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jangelsb.simpledrawerdemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EA84F93322B6B2C20018D447 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YFZ5LYLJPF;
+				INFOPLIST_FILE = SimpleDrawerDemoUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = jangelsb.SimpleDrawerDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SimpleDrawerDemo;
+			};
+			name = Debug;
+		};
+		EA84F93422B6B2C20018D447 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YFZ5LYLJPF;
+				INFOPLIST_FILE = SimpleDrawerDemoUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = jangelsb.SimpleDrawerDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SimpleDrawerDemo;
+			};
+			name = Release;
+		};
 		EAE3D903229E2AFA00206D14 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -440,7 +673,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/SimpleDrawerFramework/Info.plist";
+				INFOPLIST_FILE = SimpleDrawer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -471,7 +704,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "$(SRCROOT)/SimpleDrawerFramework/Info.plist";
+				INFOPLIST_FILE = SimpleDrawer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -507,6 +740,24 @@
 			buildConfigurations = (
 				EA78893820F29B48009C9371 /* Debug */,
 				EA78893920F29B48009C9371 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA84F92F22B6B2C20018D447 /* Build configuration list for PBXNativeTarget "SimpleDrawerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA84F93022B6B2C20018D447 /* Debug */,
+				EA84F93122B6B2C20018D447 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA84F93222B6B2C20018D447 /* Build configuration list for PBXNativeTarget "SimpleDrawerDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA84F93322B6B2C20018D447 /* Debug */,
+				EA84F93422B6B2C20018D447 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -58,7 +58,7 @@
         <!--Simple View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SimpleViewController" customModule="PanGestureTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="SimpleViewController" customModule="SimpleDrawerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -88,7 +88,7 @@
         <!--Stacked View Controller-->
         <scene sceneID="lP7-0T-FSt">
             <objects>
-                <viewController id="ESL-2W-grR" customClass="StackedViewController" customModule="PanGestureTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ESL-2W-grR" customClass="StackedViewController" customModule="SimpleDrawerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cUW-cY-LMm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="750"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -142,7 +142,7 @@
         <!--History-->
         <scene sceneID="zk8-Vk-U5p">
             <objects>
-                <tableViewController storyboardIdentifier="HistoryTableViewController2" id="FOs-rm-Urh" customClass="HistoryTableViewController" customModule="PanGestureTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="HistoryTableViewController2" id="FOs-rm-Urh" customClass="EmbeddedTableViewController" customModule="SimpleDrawerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zW7-Yg-uuQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1154,7 +1154,7 @@
         <!--Simple View Controller-->
         <scene sceneID="mhO-CN-ePL">
             <objects>
-                <viewController id="IGv-p4-P2Z" customClass="SimpleViewController" customModule="PanGestureTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="IGv-p4-P2Z" customClass="SimpleViewController" customModule="SimpleDrawerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="l6W-jg-vru">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1181,7 +1181,7 @@
         <!--History-->
         <scene sceneID="5uz-gR-Ol1">
             <objects>
-                <tableViewController storyboardIdentifier="HistoryTableViewControllerTest1" id="YLu-uy-SQM" customClass="HistoryTableViewController" customModule="PanGestureTest" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="EmbeddedTableViewControllerId" id="YLu-uy-SQM" customClass="EmbeddedTableViewController" customModule="SimpleDrawerDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="V2v-FE-6c0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2177,7 +2177,7 @@
         <!--Navigation Controller-->
         <scene sceneID="eZM-qU-aWp">
             <objects>
-                <navigationController storyboardIdentifier="NavigationViewControllerTest1" id="T94-dz-kOu" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="EmbeddedNavigationViewControllerId" id="T94-dz-kOu" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="aMF-oh-tgy">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>

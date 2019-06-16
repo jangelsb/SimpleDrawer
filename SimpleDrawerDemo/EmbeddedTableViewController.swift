@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HistoryTableViewController: UITableViewController {
+class EmbeddedTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
