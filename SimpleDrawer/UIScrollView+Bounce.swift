@@ -33,7 +33,7 @@ extension UIScrollView {
     }
     
     var isBouncingBottom: Bool {
-        return contentOffset.y > abs(contentSize.height - frame.size.height + contentInset.bottom) + 4
+        return contentOffset.y > abs(contentSize.height - frame.size.height + contentInset.bottom + adjustedContentInset.bottom) + 4
     }
     
     var distanceFromBottom: CGFloat {
@@ -42,5 +42,13 @@ extension UIScrollView {
         }
         
         return contentOffset.y - (contentSize.height - frame.size.height + contentInset.bottom)
+    }
+    
+    func scrollToBottom(animated: Bool) {
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + adjustedContentInset.bottom)
+        setContentOffset(bottomOffset, animated: animated)
+        
+//        self.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: animated)
+//        self.scrollRectToVisible(CGRect(x: 0, y: contentSize.height + adjustedContentInset.bottom, width: 1, height: 1), animated: animated)
     }
 }

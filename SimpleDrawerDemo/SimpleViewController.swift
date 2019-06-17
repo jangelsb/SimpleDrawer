@@ -23,17 +23,12 @@ class SimpleViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let drawerContent = storyboard.instantiateViewController(withIdentifier: "EmbeddedNavigationViewControllerId") as! UINavigationController
         
-        //
-        drawerContent.view.frame = self.view.frame
-        
         let drawerInfo = SimpleDrawerInfo(drawerInView: self.view,
                                           drawerContentViewController: drawerContent,
                                           drawerHandleView: drawerHandle,
                                           embeddedScrollView: (drawerContent.children.first as! EmbeddedTableViewController).tableView)
         
         drawer = SimpleDrawer(with: drawerInfo)
-        
-        
     }
     
 }
