@@ -51,4 +51,14 @@ extension UIScrollView {
 //        self.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: animated)
 //        self.scrollRectToVisible(CGRect(x: 0, y: contentSize.height + adjustedContentInset.bottom, width: 1, height: 1), animated: animated)
     }
+    
+    func scrollToTop(animated: Bool) {
+        // TODO: figure out a better way, instead of hard coding 8 (it is needed for the large title bars)
+        // It still works fine if the title bar is also small
+        let offset = CGPoint(
+            x: -self.adjustedContentInset.left,
+            y: -self.adjustedContentInset.top - 8)
+        
+        self.setContentOffset(offset, animated: animated)
+    }
 }

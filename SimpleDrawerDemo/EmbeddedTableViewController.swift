@@ -29,7 +29,7 @@ class EmbeddedTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        scrollToLastRow(animated: false)
+//        scrollToLastRow(animated: false)
     }
     
     func scrollToLastRow(animated: Bool) {
