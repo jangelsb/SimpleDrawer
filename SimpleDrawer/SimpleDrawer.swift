@@ -8,6 +8,12 @@
 
 import UIKit
 
+public enum AutoScrollType: Int {
+    case top
+    case bottom
+    case none
+}
+
 public struct SimpleDrawerInfo {
 //    - [ ] DrawerContentVC
 //    - [ ] DrawerHandleView
@@ -19,12 +25,16 @@ public struct SimpleDrawerInfo {
     var drawerHandleView: UIView
     
     var embeddedScrollView: UIScrollView?
-    
-    public init(drawerInView: UIView, drawerContentViewController: UIViewController, drawerHandleView: UIView, embeddedScrollView: UIScrollView?) {
+    var closedAutoScrollType: AutoScrollType
+    var openedAutoScrollType: AutoScrollType
+
+    public init(drawerInView: UIView, drawerContentViewController: UIViewController, drawerHandleView: UIView, embeddedScrollView: UIScrollView?, closedAutoScrollType: AutoScrollType = .none, openedAutoScrollType: AutoScrollType = .none) {
         self.drawerInView = drawerInView
         self.drawerContentViewController = drawerContentViewController
         self.drawerHandleView = drawerHandleView
         self.embeddedScrollView = embeddedScrollView
+        self.closedAutoScrollType = closedAutoScrollType
+        self.openedAutoScrollType = openedAutoScrollType
     }
 }
 
@@ -189,7 +199,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         drawerView.addGestureRecognizer(panGesture)
         drawerDragGR = panGesture
         
-        currentDrawerState = .closed
+        closeDrawer()
+//        currentDrawerState = .closed
         
         innerScrollPanGR = self.drawerInfo.embeddedScrollView?.panGestureRecognizer
         innerScrollPanGR?.maximumNumberOfTouches = 1
@@ -364,7 +375,15 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         // animate to the initial position
         animateTransitionOriginAndHeight(fromY: 0, toYOrigin: self.drawerHandleStartPoint, toYHeight: 0.0, for: drawerView , animationCompletion: {
             if let scrollView = self.drawerInfo.embeddedScrollView {
-                scrollView.scrollToTop(animated: false)
+                
+                switch self.drawerInfo.closedAutoScrollType {
+                case .top:
+                        scrollView.scrollToTop(animated: false)
+                case .bottom:
+                    scrollView.scrollToBottom(animated: false)
+                default:
+                    break
+                }
             }
         })
         self.currentDrawerState = .closed
@@ -377,14 +396,22 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             self?.drawerInfo.drawerContentViewController.view.setNeedsLayout()
         }, animationCompletion: {
 
-            // TODO: find a better place for this...
-//            if let scrollView = self.drawerInfo.embeddedScrollView {
-//
-//                // This is needed FOR NOW because when
-//                // self.drawerInfo.drawerContentViewController.view.setNeedsLayout()
-//                // is called, it fixes the navigation bar on iPhone X and margin, but then the scroll view is now offset. So we need to scroll to the bottom...
-//                scrollView.scrollToBottom(animated: true)
-//            }
+            if let scrollView = self.drawerInfo.embeddedScrollView {
+
+                switch self.drawerInfo.openedAutoScrollType {
+                case .top:
+                    scrollView.scrollToTop(animated: true)
+                case .bottom:
+                    
+                    // TODO: find a better place for this...
+                    // This is needed FOR NOW because when
+                    // self.drawerInfo.drawerContentViewController.view.setNeedsLayout()
+                    // is called, it fixes the navigation bar on iPhone X and margin, but then the scroll view is now offset. So we need to scroll to the bottom...
+                    scrollView.scrollToBottom(animated: true)
+                default:
+                    break
+                }
+            }
         })
         
         self.currentDrawerState = .open
