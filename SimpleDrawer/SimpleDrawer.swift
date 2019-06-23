@@ -8,6 +8,11 @@
 
 import UIKit
 
+public protocol SimpleDrawerDelegate {
+    func drawerClosed()
+    func drawerOpened()
+}
+
 public enum AutoScrollType: Int {
     case top
     case bottom
@@ -41,6 +46,7 @@ public struct SimpleDrawerInfo {
 public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     
     public var drawerInfo: SimpleDrawerInfo
+    public var delegate: SimpleDrawerDelegate?
     
     var drawerView: UIView!
 //    var combindedDrawer: UIView!
@@ -119,9 +125,10 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 //        return combindedDrawer.frame.maxY
 //    }
 
-    public init(with drawerInfo: SimpleDrawerInfo) {
+    public init(with drawerInfo: SimpleDrawerInfo, delegate: SimpleDrawerDelegate? = nil) {
         
         self.drawerInfo = drawerInfo
+        self.delegate = delegate
         
         super.init()
 
@@ -387,6 +394,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             }
         })
         self.currentDrawerState = .closed
+        self.delegate?.drawerClosed()
     }
     
     public func openDrawer() {
@@ -415,6 +423,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         })
         
         self.currentDrawerState = .open
+        self.delegate?.drawerOpened()
     }
 
 //    func animateTransitionOriginY(fromY: CGFloat, toY: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
