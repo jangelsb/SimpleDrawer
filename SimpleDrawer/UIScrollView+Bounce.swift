@@ -32,8 +32,10 @@ extension UIScrollView {
         return contentOffset.y >= contentSize.height - frame.size.height && contentOffset.y <= abs(contentSize.height - frame.size.height) + 4
     }
     
+    // TODO: update all contentInset.bottom to (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0) ???
+    // TODO: update all contentInset.top to (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0.0) ???
     var isBouncingBottom: Bool {
-        return contentOffset.y > abs(contentSize.height - frame.size.height + contentInset.bottom + adjustedContentInset.bottom) + 4
+        return contentOffset.y > abs(contentSize.height - frame.size.height + contentInset.bottom + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0)) + 4
     }
     
     var distanceFromBottom: CGFloat {
@@ -45,11 +47,8 @@ extension UIScrollView {
     }
     
     func scrollToBottom(animated: Bool) {
-        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + adjustedContentInset.bottom)
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - frame.size.height + (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0))
         setContentOffset(bottomOffset, animated: animated)
-        
-//        self.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: animated)
-//        self.scrollRectToVisible(CGRect(x: 0, y: contentSize.height + adjustedContentInset.bottom, width: 1, height: 1), animated: animated)
     }
     
     func scrollToTop(animated: Bool) {

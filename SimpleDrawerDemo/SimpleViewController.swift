@@ -28,7 +28,7 @@ class SimpleViewController: UIViewController {
                                           drawerHandleView: drawerHandle,
                                           embeddedScrollView: (drawerContent.children.first as! EmbeddedTableViewController).tableView,
                                           closedAutoScrollType: .bottom,
-                                          openedAutoScrollType: .bottom)
+                                          openedAutoScrollType: .none)
         
         drawer = SimpleDrawer(with: drawerInfo)
     }
