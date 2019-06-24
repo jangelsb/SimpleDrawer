@@ -243,46 +243,14 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         //      animate the drawer up and restore the the height
        if currentDrawerState == .open && scrollView.isBouncingBottom && velocityY <= 0 {
         
-        // TODO: need to grab bottom margin (aka iphone x safe area)
+            let animator = UIViewPropertyAnimator(duration: TimeInterval(abs(velocityY) * 0.0002),
+                                                  timingParameters: UISpringTimingParameters())
         
-//
-//
-//            // animate the drawer up to the bottom of the scroll view by setting the height of the drawer its height minus offset
-//            // and then restoring after if needed (the drawer could be already closed or open)
-//            let offset = scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height)
-//
-//            animateTransitionHeight(fromY: 0, toY: oldFrame.maxY - offset, for: view, animationCompletion: {
-//                scrollView.bounces = false
-//
-//                // TODO investigate
-////                if self.combindedDrawer.frame.height != self.drawerOpenHeight {
-////                    self.combindedDrawer.frame = CGRect(x: self.combindedDrawer.frame.origin.x, y: self.combindedDrawer.frame.origin.y - offset, width: self.combindedDrawer.frame.size.width, height: self.drawerOpenHeight)
-////
-////                    // update the oldFrame so the that the current pan gesture stays correct
-////                    // TODO: investigate if needed
-//////                    oldFrame = self.combindedDrawer.frame
-////                    oldFrame = self.drawerInfo.drawerHandleView.frame
-////
-////                }
-//            })
-       }
-        
-        // only do this if passed the bottom
-        // drawer is open, we are at the bottom, the user is trying to scroll up and the scroll view is currently bouncing
-        //      animate the drawer up and restore the the height
-//        if currentDrawerState == .open && scrollView.isBouncingBottom && velocityY <= 0 {
-//            
-//            
-//            // animate the drawer up to the bottom of the scroll view by setting the height of the drawer its height minus offset
-//            // and then restoring after if needed (the drawer could be already closed or open)
-//            let offset = scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height)
-//            let prevHeight = view.frame.height
-//            
-//            // maybe self.drawerScrollViewBottomDefaultOffset - offset?
-//            animateTransitionHeight(fromHeight: 0, toHeight: view.frame.maxY - offset, for: view, animateAlongside: {
-//                view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y - offset, width: view.frame.size.width, height: prevHeight)
-//            })
-//        }
+            animator.addAnimations {
+                scrollView.scrollToBottom(animated: false)
+            }
+            animator.startAnimation()
+        }
         
         if currentDrawerState == .animating {
             print("drawer is mid animation")
