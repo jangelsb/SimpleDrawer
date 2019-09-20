@@ -25,17 +25,17 @@ public struct SimpleDrawerInfo {
 //    - Use it’s height
     
     
-    var drawerInView: UIView
-    var drawerContentViewController: UIViewController
+    var drawerInVC: UIViewController
+    var drawerContentVC: UIViewController
     var drawerHandleView: UIView
     
     var embeddedScrollView: UIScrollView?
     var closedAutoScrollType: AutoScrollType
     var openedAutoScrollType: AutoScrollType
 
-    public init(drawerInView: UIView, drawerContentViewController: UIViewController, drawerHandleView: UIView, embeddedScrollView: UIScrollView?, closedAutoScrollType: AutoScrollType = .none, openedAutoScrollType: AutoScrollType = .none) {
-        self.drawerInView = drawerInView
-        self.drawerContentViewController = drawerContentViewController
+    public init(drawerInVC: UIViewController, drawerContentVC: UIViewController, drawerHandleView: UIView, embeddedScrollView: UIScrollView?, closedAutoScrollType: AutoScrollType = .none, openedAutoScrollType: AutoScrollType = .none) {
+        self.drawerInVC = drawerInVC
+        self.drawerContentVC = drawerContentVC
         self.drawerHandleView = drawerHandleView
         self.embeddedScrollView = embeddedScrollView
         self.closedAutoScrollType = closedAutoScrollType
@@ -48,12 +48,14 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     public var drawerInfo: SimpleDrawerInfo
     public var delegate: SimpleDrawerDelegate?
     
-    var drawerView: UIView!
+    public var drawerView: UIView!
 //    var combindedDrawer: UIView!
 
     var drawerDragGR: UIPanGestureRecognizer?
 
     var innerScrollPanGR: UIPanGestureRecognizer?
+    
+    var isFirstOpen = true
     
     var prevY: CGFloat = 0
     
@@ -61,7 +63,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     var drawerHandleStartPoint: CGFloat = 0.0
     var drawerHandleEndPoint: CGFloat = 0.0
 
-    var currentDrawerState: DrawerState = .closed {
+    private(set) public var currentDrawerState: DrawerState = .closed {
         didSet{
             print("Drawer is now \(currentDrawerState)")
             
@@ -92,7 +94,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     }
         
     
-    enum DrawerState {
+    public enum DrawerState {
         case closed
         case beingDragged
         case animating
@@ -138,9 +140,9 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     func setUp() {
         
         
-        let oldHandleFrame = self.drawerInfo.drawerHandleView.frame
+        _ = self.drawerInfo.drawerHandleView.frame
 
-        let h = self.drawerInfo.drawerHandleView.frame.height + self.drawerInfo.drawerContentViewController.view.frame.height
+        let h = self.drawerInfo.drawerHandleView.frame.height + self.drawerInfo.drawerContentVC.view.frame.height
         let y = self.drawerInfo.drawerHandleView.frame.maxY - h
         
         // make new view that contains the handle and the content
@@ -167,19 +169,23 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         
 //        let drawerView = UIView(frame: CGRect(x: 0, y: y, width: self.drawerInfo.drawerHandleView.frame.width, height: h))
         
-        drawerView = UIView(frame: CGRect(x: 0, y: y, width: self.drawerInfo.drawerHandleView.frame.width, height: h))
-
+        drawerView = UIView(frame: CGRect(x: 0, y: y, width: self.drawerInfo.drawerInVC.view.frame.width, height: h))
         
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = CGRect(x: 0, y: 0, width: drawerView.frame.width, height: drawerView.frame.height)
         
         // TODO: investigate if this is needed...
         self.drawerInfo.drawerHandleView.removeFromSuperview()
         
 //        self.drawerInfo.drawerHandleView.frame = oldHandleFrame
         
-        drawerView.addSubview(self.drawerInfo.drawerContentViewController.view)
+        drawerView.backgroundColor = .clear
+        drawerView.addSubview(blurEffectView)
+        drawerView.addSubview(self.drawerInfo.drawerContentVC.view)
         drawerView.addSubview(self.drawerInfo.drawerHandleView)
         
-        self.drawerInfo.drawerInView.addSubview(drawerView)
+        self.drawerInfo.drawerInVC.view.addSubview(drawerView)
         
         // TODO: possilby... https://stackoverflow.com/a/27278985/9605061
         // need to call drawerInViewController.addChild(embeddedVC)
@@ -195,8 +201,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         self.drawerHandleStartPoint = self.drawerView.frame.minY
         self.drawerHandleEndPoint = 0 // TODO: customize in DrawerInfo: negative number here needs to be subtracted from the emedded vc hieght
         
-        self.drawerInfo.drawerContentViewController.view.frame.origin.y = 0
-        self.drawerInfo.drawerHandleView.frame.origin.y = self.drawerInfo.drawerContentViewController.view.frame.maxY
+        self.drawerInfo.drawerContentVC.view.frame.origin.y = 0
+        self.drawerInfo.drawerHandleView.frame.origin.y = self.drawerInfo.drawerContentVC.view.frame.maxY
 
         // uncomment to add pulling down drawer
         let panGesture = UIPanGestureRecognizer(target: self,
@@ -206,7 +212,11 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         drawerView.addGestureRecognizer(panGesture)
         drawerDragGR = panGesture
         
-        closeDrawer()
+        // TODO:
+//        // so it scrolls after the content of the drawer has loaded, probably should change to a delegate of some sort
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+//            self?.closeDrawer()
+//        }
 //        currentDrawerState = .closed
         
         innerScrollPanGR = self.drawerInfo.embeddedScrollView?.panGestureRecognizer
@@ -218,8 +228,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 
         guard let panGesture = drawerDragGR, let view = panGesture.view, let scrollView = self.drawerInfo.embeddedScrollView else { return }
         
-        let touchLocationY = panGesture.location(in: self.drawerInfo.drawerInView).y
-        let velocityY = panGesture.velocity(in: self.drawerInfo.drawerInView).y
+        let touchLocationY = panGesture.location(in: self.drawerInfo.drawerInVC.view).y
+        let velocityY = panGesture.velocity(in: self.drawerInfo.drawerInVC.view).y
         
         // TODO: also need to allow for pull up the drawer, if the user is pulling up from the handle while the drawer is open, regardless of is the scrollview is at the bottom or not
 
@@ -267,7 +277,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             print("new y is smaller than initial height")
 
             prevY = touchLocationY
-            closeDrawer()
+//            closeDrawer()
+            currentDrawerState = .closed
             return
         }
         
@@ -279,7 +290,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             prevY = touchLocationY
             
             // TODO: investigate why this function gets called so quickly. Maybe I should compare offset or velocity or something
-            openDrawer()
+//            openDrawer()
+            currentDrawerState = .open
 //            view.frame = CGRect(x: view.frame.origin.x, y: 0, width: view.frame.size.width, height: drawerOpenHeight)
 //            view.frame.origin.y = self.drawerHandleEndPoint
             return
@@ -311,7 +323,7 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             prevY = 0
         
 //            currentDrawerState = .animating
-            if panGesture.velocity(in: self.drawerInfo.drawerInView).y > 150 {
+            if panGesture.velocity(in: self.drawerInfo.drawerInVC.view).y > 150 {
                 openDrawer()
             } else {
                closeDrawer()
@@ -341,19 +353,22 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             return true
         }
         
-        return false
+        // if this is yes, you can do swipe to delete
+        return true
     }
     
     
     // MARK: - Animations
     public func closeDrawer() {
         // animate to the initial position
-        animateTransitionOriginAndHeight(fromY: 0, toYOrigin: self.drawerHandleStartPoint, toYHeight: 0.0, for: drawerView , animationCompletion: {
+        animateTransitionOriginAndHeight(fromY: 0, toYOrigin: self.drawerHandleStartPoint, toYHeight: 0.0, for: drawerView , animateAlongside: { [weak self] in
+            guard let self = self else { return }
+            
             if let scrollView = self.drawerInfo.embeddedScrollView {
                 
                 switch self.drawerInfo.closedAutoScrollType {
                 case .top:
-                        scrollView.scrollToTop(animated: false)
+                    scrollView.scrollToTop(animated: false)
                 case .bottom:
                     scrollView.scrollToBottom(animated: false)
                 default:
@@ -366,28 +381,22 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     }
     
     public func openDrawer() {
-        // animate to the ending position
+        self.drawerInfo.drawerContentVC.view.setNeedsLayout()
+
         animateTransitionOriginAndHeight(fromY: 0, toYOrigin: self.drawerHandleEndPoint, toYHeight: 0.0, for: drawerView, animateAlongside: { [weak self] in
+            guard let self = self else { return }
             
-            self?.drawerInfo.drawerContentViewController.view.setNeedsLayout()
-        }, animationCompletion: {
-
+            self.drawerInfo.drawerContentVC.view.layoutIfNeeded()
             if let scrollView = self.drawerInfo.embeddedScrollView {
-
                 switch self.drawerInfo.openedAutoScrollType {
-                case .top:
-                    scrollView.scrollToTop(animated: true)
-                case .bottom:
-                    
-                    // TODO: find a better place for this...
-                    // This is needed FOR NOW because when
-                    // self.drawerInfo.drawerContentViewController.view.setNeedsLayout()
-                    // is called, it fixes the navigation bar on iPhone X and margin, but then the scroll view is now offset. So we need to scroll to the bottom...
-                    scrollView.scrollToBottom(animated: true)
-                default:
-                    break
+                    case .top:
+                        scrollView.scrollToTop(animated: false)
+                    case .bottom:
+                        scrollView.scrollToBottom(animated: false)
+                    default:
+                        break
+                    }
                 }
-            }
         })
         
         self.currentDrawerState = .open

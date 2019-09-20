@@ -11,7 +11,7 @@ import SimpleDrawer
 
 class SimpleViewController: UIViewController {
     
-    @IBOutlet var drawerHandle: UIView!
+    @IBOutlet var drawerHandleView: UIView!
     
     var drawer: SimpleDrawer!
     
@@ -21,15 +21,23 @@ class SimpleViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let drawerContent = storyboard.instantiateViewController(withIdentifier: "EmbeddedNavigationViewControllerId") as! UINavigationController
+        let drawerContentVC = storyboard.instantiateViewController(withIdentifier: "EmbeddedNavigationViewControllerId") as! UINavigationController
         
-        let drawerInfo = SimpleDrawerInfo(drawerInView: self.view,
-                                          drawerContentViewController: drawerContent,
-                                          drawerHandleView: drawerHandle,
-                                          embeddedScrollView: (drawerContent.children.first as! EmbeddedTableViewController).tableView,
+        // TODO: investigate ViewController Containment more thoroughly
+        // Need to actually do this for the "Drawer" VC
+//        self.addChild(drawerContentVC)
+//        drawerContentVC.view.frame = self.view.frame.offsetBy(dx: 0, dy: 0)
+//        view.addSubview(drawerContentVC.view)
+//        drawerContentVC.didMove(toParent: self)
+
+        
+        let drawerInfo = SimpleDrawerInfo(drawerInVC: self,
+                                          drawerContentVC: drawerContentVC,
+                                          drawerHandleView: drawerHandleView,
+                                          embeddedScrollView: (drawerContentVC.children.first as! EmbeddedTableViewController).tableView,
                                           closedAutoScrollType: .bottom,
                                           openedAutoScrollType: .none)
-        
+
         drawer = SimpleDrawer(with: drawerInfo)
     }
     
