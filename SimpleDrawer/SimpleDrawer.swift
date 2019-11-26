@@ -62,6 +62,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     var drawerScrollViewBottomDefaultOffset: CGFloat = 0.0
     var drawerHandleStartPoint: CGFloat = 0.0
     var drawerHandleEndPoint: CGFloat = 0.0
+    
+    var shouldIgnore = false
 
     private(set) public var currentDrawerState: DrawerState = .closed {
         didSet{
@@ -221,16 +223,39 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         
         innerScrollPanGR = self.drawerInfo.embeddedScrollView?.panGestureRecognizer
         innerScrollPanGR?.maximumNumberOfTouches = 1
-
     }
     
     @objc func handleDrawerDrag() {
 
         guard let panGesture = drawerDragGR, let view = panGesture.view, let scrollView = self.drawerInfo.embeddedScrollView else { return }
-        
+                
         let touchLocationY = panGesture.location(in: self.drawerInfo.drawerInVC.view).y
         let velocityY = panGesture.velocity(in: self.drawerInfo.drawerInVC.view).y
+        let velocityX = panGesture.velocity(in: self.drawerInfo.drawerInVC.view).x
         
+        
+        print("velocityX: \(velocityX)")
+        print("velocityY: \(velocityY)")
+
+        if currentDrawerState == .closed && abs(velocityX) > abs(velocityY) {
+            
+            print("velocityX: \(velocityX)")
+//            prevY = touchLocationY
+            shouldIgnore = true
+            return
+            
+        }
+        
+        
+        if shouldIgnore {
+            
+            if (panGesture.state == .cancelled || panGesture.state == .ended) {
+                
+            } else {
+                return
+            }
+        }
+
         // TODO: also need to allow for pull up the drawer, if the user is pulling up from the handle while the drawer is open, regardless of is the scrollview is at the bottom or not
 
         // drawer is open, we are NOT at the bottom, do nothing
@@ -319,7 +344,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         case .ended:
             print("ended")
 
-            
+            shouldIgnore = false
+
             prevY = 0
         
 //            currentDrawerState = .animating
@@ -334,6 +360,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             
             // animate to the initial position
             closeDrawer()
+            shouldIgnore = false
+
             
         default:
             
@@ -397,6 +425,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
                         break
                     }
                 }
+            }, animationCompletion: {
+//                self.drawerInfo.drawerContentVC.view.layoutIfNeeded()
         })
         
         self.currentDrawerState = .open
