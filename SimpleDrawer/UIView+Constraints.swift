@@ -34,10 +34,12 @@ extension UIView {
     }
     
     func removeConstraintsForAllSubViews() {
-        for view in self.subviews {
-            view.removeConstraintsForAllSubViews()
-        }
-        
-        removeAllConstraints()
+//        for view in self.subviews {
+//            view.removeConstraintsForAllSubViews()
+//        }
+//
+//        removeAllConstraints()
+//
+
     }
 }
