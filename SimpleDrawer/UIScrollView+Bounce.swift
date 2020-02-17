@@ -28,8 +28,9 @@ extension UIScrollView {
         return contentFillsScrollEdges && contentOffset.x > contentSize.width - bounds.width + contentInset.right
     }
     
-    var atBottomStrict: Bool {
-        return contentOffset.y >= contentSize.height - frame.size.height && contentOffset.y <= abs(contentSize.height - frame.size.height) + 4
+    var atBottomStrict: Bool {        
+        let windowSize = contentSize.height - frame.size.height + adjustedContentInset.bottom
+        return contentOffset.y >= windowSize && contentOffset.y <= abs(windowSize) + 4
     }
     
     // TODO: update all contentInset.bottom to (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0) ???
@@ -47,31 +48,6 @@ extension UIScrollView {
         
         return contentOffset.y - (contentSize.height - frame.size.height + contentInset.bottom)
     }
-    
-//    func scrollToBottom(animated: Bool) {
-//
-//        // TODO: remove or unhardcode this
-//        let bigTitleDiff = adjustedContentInset.top > 88 ? adjustedContentInset.top - 88 : 0
-//
-//        var y: CGFloat = -self.adjustedContentInset.top - 8 // set the content to the top, unless contentSize.height > frame.size.height
-//
-//        if contentSize.height > frame.size.height {
-//            y = contentSize.height - frame.size.height //+ (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0) - bigTitleDiff
-//        }
-//
-//        let bottomOffset = CGPoint(x: 0, y: y)
-//        setContentOffset(bottomOffset, animated: animated)
-//    }
-//
-//    func scrollToTop(animated: Bool) {
-//        // TODO: figure out a better way, instead of hard coding 8 (it is needed for the large title bars)
-//        // It still works fine if the title bar is also small
-//        let offset = CGPoint(
-//            x: -self.adjustedContentInset.left,
-//            y: -self.adjustedContentInset.top - 8)
-//
-//        self.setContentOffset(offset, animated: animated)
-//    }
 }
 
 
@@ -91,22 +67,24 @@ extension UIScrollView {
     
     // Bonus: Scroll to top
     func scrollToTop(animated: Bool) {
-        let topOffset = CGPoint(x: 0, y: -contentInset.top)
+        // https://stackoverflow.com/a/58858283/9605061
+        layoutIfNeeded()
+        
+        // https://stackoverflow.com/a/57402180/9605061
+        let topOffset = CGPoint(x: contentOffset.x,
+                                   y: -adjustedContentInset.top)
         setContentOffset(topOffset, animated: animated)
     }
     
     // Bonus: Scroll to bottom
     public func scrollToBottom(animated: Bool) {
-        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + adjustedContentInset.bottom) //contentInset.bottom)
-        if(bottomOffset.y > 0) {
-            setContentOffset(bottomOffset, animated: animated)
-        }
+        // https://stackoverflow.com/a/58858283/9605061
+        layoutIfNeeded()
         
-        // UIApplication.shared.keyWindow?.safeAreaInsets always has a bottom of 34
-        
-        
-//        let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.)
-//        scrollView.setContentOffset(bottomOffset, animated: true)
+        // https://stackoverflow.com/a/57402180/9605061
+        let bottomOffset = CGPoint(x: contentOffset.x,
+                                   y: contentSize.height - bounds.height + adjustedContentInset.bottom)
+        setContentOffset(bottomOffset, animated: animated)
     }
     
 }

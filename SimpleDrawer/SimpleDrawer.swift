@@ -52,29 +52,26 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 //    var combindedDrawer: UIView!
 
     var drawerDragGR: UIPanGestureRecognizer?
-
     var innerScrollPanGR: UIPanGestureRecognizer?
-    
-    var isFirstOpen = true
-    
-    var prevY: CGFloat = 0
-    
-    var drawerScrollViewBottomDefaultOffset: CGFloat = 0.0
-
-//    var drawerHandleStartPoint: CGFloat = 0.0
-//    var drawerHandleEndPoint: CGFloat = 0.0
-    
+        
+        
     var drawerCloseConstraint: NSLayoutConstraint!
     var drawerOpenConstraint: NSLayoutConstraint!
     
     var animator: UIViewPropertyAnimator!
 
 
-    var shouldIgnore = false
-
     private(set) public var currentDrawerState: DrawerState = .closed {
         didSet{
             print("Drawer is now \(currentDrawerState)")
+            
+            if currentDrawerState == oldValue {
+                return
+            }
+            
+            if oldValue == .open || oldValue == .closed {
+                previousEndState = oldValue
+            }
             
             if let scrollView = self.drawerInfo.embeddedScrollView {
                 
@@ -82,12 +79,14 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
                 case .closed:
                     scrollView.isScrollEnabled = false
                     scrollView.bounces = false
+                    
+                    delegate?.drawerClosed()
                     break
                 case .open:
                     scrollView.isScrollEnabled = true
                     scrollView.bounces = true
-//
-//                    self.drawerInfo.drawerContentViewController.view.setNeedsLayout()
+                    
+                    delegate?.drawerOpened()
                     break
                     
                 case .beingDragged:
@@ -101,7 +100,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             }
         }
     }
-        
+    
+    private(set) public var previousEndState: DrawerState = .closed
     
     public enum DrawerState {
         case closed
@@ -193,11 +193,6 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 
         
         NSLayoutConstraint.activate([drawerCloseConstraint])
-        
-//        DispatchQueue.main.async {
-//            self.closeDrawer()
-//
-//        }
         
         makePropertyAnimator()
 
@@ -369,17 +364,18 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         
         
         guard let scrollView = self.drawerInfo.embeddedScrollView else { return }
-        
-        
-        let touchLocation = sender.location(in: self.drawerInfo.drawerInVC.view)
+                
         let velocity = sender.velocity(in: self.drawerInfo.drawerInVC.view)
         let translation = sender.translation(in: self.drawerInfo.drawerInVC.view)
         
+        let translation_drawerView = sender.translation(in: self.drawerView)
+        let translation_scrollView = sender.translation(in: scrollView)
+
         let velocityY = sender.velocity(in: self.drawerInfo.drawerInVC.view).y
         let velocityX = sender.velocity(in: self.drawerInfo.drawerInVC.view).x
         
-        // is this needed?
-        if (self.animator.isRunning)
+        // TODO: this is a good idea, but if we are begining a gesture, we are gonna call pause...
+        if (self.animator.isRunning && sender.state != .began)
         {
             print("animatino is running.... return ")
             return
@@ -415,30 +411,37 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             return
         }
         
+        
+        // TODO: investigate jumping... maybe store last translation or something
+        if currentDrawerState == .open && scrollView.isBouncing {
+            
+            print("scrollview is bouncing... ignoring...")
+
+            return
+        }
+        
+//        if currentDrawerState == .closed && velocityY < 0 {
+//            print("drawer is closed, and the user is trying to scroll up, do nothing")
+//
+//            return
+//        }
+        
         //        print("touchLocation: \(touchLocation)")
         //        print("velocity: \(velocity)")
         print("translation: \(translation)")
-        
-        //        if velocityY < 0 {
-        //
-        //            print("not swiping down")
-        //
-        //            return
-        //        }
-        //
-        
-//        scrollView.bounces = false
-//        scrollView.isScrollEnabled = false
+        print("translation_drawerView: \(translation_drawerView)")
+        print("translation_scrollView: \(translation_scrollView)")
 
-        
         switch sender.state {
         case .began:
             print("!!!!! began")
+            animator.pauseAnimation()
 
             fallthrough
         case .changed:
+            currentDrawerState = .beingDragged
             
-            if self.currentDrawerState == .open {
+            if self.previousEndState == .open {
                 print("is reverse")
                 animator.isReversed = true
             } else {
@@ -446,10 +449,12 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             }
             
             
-            // use abs to allow pull up...????
-            let fraction = abs(translation.y / self.drawerInfo.drawerInVC.view.frame.height)
-            print("!!!!! changed: \(fraction)")
-            animator.fractionComplete = fraction
+            // not frame height... I think it's the distance needed to travel between end and start positions. Not sure how to calculate that
+            let fraction = translation.y / self.drawerInfo.drawerInVC.view.frame.height
+            let adjustedFraction = self.previousEndState == .open ? fraction * -1 : fraction
+            
+            print("!!!!! changed: \(adjustedFraction)")
+            animator.fractionComplete = adjustedFraction
             
         case .ended:
             print("ended")
@@ -468,14 +473,10 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 
             }
             
-            animator.startAnimation()
-            
+            fallthrough
         case .cancelled:
             print("cancelled")
-            
-            // TODO: need to determine which way to go based on drawer state...
-//            animator.isReversed = true
-            animator.startAnimation()
+            fallthrough
         default:
             print("default")
             
@@ -487,24 +488,35 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     
     
     // MARK: - UIGestureRecognizer
+//    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//
+//        // only shouldRecognizeSimultaneously if it is this pan gesture and the scrollView
+//        if gestureRecognizer == drawerDragGR && otherGestureRecognizer == innerScrollPanGR {
+//            return true
+//        }
+//
+//
+//
+//        // if this is yes, you can do swipe to delete
+//        return true
+//    }
+    
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        // only shouldRecognizeSimultaneously if it is this pan gesture and the scrollView
-        if gestureRecognizer == drawerDragGR && otherGestureRecognizer == innerScrollPanGR {
+        if let scrollView = otherGestureRecognizer.view as? UIScrollView {
+            let atBottom = scrollView.atBottomStrict
+            print("atbottom: \(atBottom)")
+
+            // TODO: could do something fancy given that the otherGesture is the inner scrollview.
+            // E.g., scrollView must be at the bottom, or is not bouncing or something. But so far always returning true and ignoring in the handlePan func seems better...
             return true
         }
-        
-        // if this is yes, you can do swipe to delete
         return true
     }
-    
     
     // MARK: - Animations
     
     
-    func openDrawer() {
-        
-        
+    func openDrawerConstraints() {
         NSLayoutConstraint.deactivate([
             self.drawerCloseConstraint
         ])
@@ -513,11 +525,12 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             self.drawerOpenConstraint
         ])
 
-        
+        self.drawerInfo.drawerContentVC.setNeedsStatusBarAppearanceUpdate()
+        self.drawerInfo.drawerContentVC.view.setNeedsLayout()
         self.drawerView.superview?.layoutIfNeeded()
     }
     
-    func closeDrawer() {
+    public func closeDrawerConstraints() {
         NSLayoutConstraint.deactivate([
             self.drawerOpenConstraint
         ])
@@ -526,8 +539,46 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
             self.drawerCloseConstraint
         ])
 
-
+        self.drawerInfo.drawerContentVC.view.setNeedsLayout()
         self.drawerView.superview?.layoutIfNeeded()
+    }
+    
+    public func openDrawer() {
+        animator.isReversed = false
+        self.currentDrawerState = .open
+        animator.startAnimation()
+        
+        // does doing this after the animation make a difference?
+        if let scrollView = self.drawerInfo.embeddedScrollView {
+            switch self.drawerInfo.closedAutoScrollType {
+            case .top:
+                scrollView.scrollToTop(animated: false)
+            case .bottom:
+                scrollView.scrollToBottom(animated: false)
+            default:
+                break
+            }
+        }
+    }
+    
+    public func closeDrawer() {
+        animator.isReversed = true
+        self.currentDrawerState = .closed
+        animator.startAnimation()
+        
+        
+        if let scrollView = self.drawerInfo.embeddedScrollView {
+            
+            switch self.drawerInfo.closedAutoScrollType {
+            case .top:
+                scrollView.scrollToTop(animated: false)
+            case .bottom:
+                scrollView.scrollToBottom(animated: false)
+            default:
+                break
+            }
+        }
+        
     }
     
 //    public func closeDrawer() {
@@ -591,133 +642,32 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
 //
 //        animator.startAnimation()
 //    }
-    
-    func animateTransitionHeight(fromHeight: CGFloat, toHeight: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
-        
-        let animator = makeAnimator(fromY: fromHeight, toY: toHeight, for: view)
-        
-        animator.addAnimations {
-            view.frame.size.height = toHeight
-            animateAlongside?()
-        }
-        
-        animator.addCompletion { endingPosition in
-            animationCompletion?()
-        }
-        
-        animator.startAnimation()
-    }
-    
-    func animateTransitionOriginAndHeight(fromY: CGFloat, toYOrigin: CGFloat, toYHeight: CGFloat, for view: UIView, animateAlongside: (() -> Void)? = nil, animationCompletion: (() -> Void)? = nil) {
-        
-        let animator = makeAnimator(fromY: fromY, toY: toYOrigin, for: view)
-        
-        animator.addAnimations {
-            
-//            view.frame.offsetBy(dx: 0.0, dy: fromY - toYOrigin)
-//            view.frame = CGRect(x: view.frame.origin.x, y: toYOrigin, width: view.frame.size.width, height: toYHeight)
-            
-            // TODO: it's animating the handle, needs to animate the handle and the content... how to make as one?????
-            // opening: when opening set the origin to be the position where the handle is completely off screen
-            //  content goes to 0.0, handle goes to screen.maxY
-            // closing:
-            //  handle goes back to original origin
-            //  content goes back to: handle.minY - content.height
-            //
-
-            view.frame.origin.y = toYOrigin;
-            animateAlongside?()
-        }
-        
-        animator.addCompletion { endingPosition in
-            animationCompletion?()
-        }
-        
-        animator.startAnimation()
-    }
-    
-    private func makeAnimator(fromY: CGFloat, toY: CGFloat, for view: UIView) -> UIViewPropertyAnimator {
-        
-        // TODO: does setting the duration do anything?
-        
-        // have the duration be proportional to the distance traveled
-        // borrowed from DrawerKit's AnimationSupport
-//        let fractionToGo = abs(toY - fromY) / view.frame.height
-        let duration = 0.4 // * TimeInterval(fractionToGo)
-        
-        // TODO: maybe make the duration be a fraction of the velocity 
-        return UIViewPropertyAnimator(duration: duration,
-                                      timingParameters: UISpringTimingParameters())
-    }
 
     func makePropertyAnimator() {
         animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
-            
-//            if self.currentDrawerState == .open {
-//                print("MADE ANIMATOR: to close")
-//                self.closeDrawer()
-//            } else if self.currentDrawerState == .closed {
                 print("MADE ANIMATOR: to open")
-                
-                self.openDrawer()
-//            }
-            
+                self.openDrawerConstraints()
         }
         
         animator.pausesOnCompletion = true
-        
-//        animator.addCompletion { (position) in
-//
-//            if position == .end /* and something else */ {
-//                print("action: Secondary")
-//                print("😎 DO THE THING 👍")
-//
-//
-//
-//
-//                if self.currentDrawerState == .open && self.animator.isReversed == false {
-//                    if let scrollView = self.drawerInfo.embeddedScrollView {
-//
-//                        switch self.drawerInfo.closedAutoScrollType {
-//                        case .top:
-//                            scrollView.scrollToTop(animated: false)
-//                        case .bottom:
-//                            scrollView.scrollToBottom(animated: false)
-//                        default:
-//                            break
-//                        }
-//                    }
-//
-//                    self.currentDrawerState = .closed
-//                    self.delegate?.drawerClosed()
-//            } else if self.currentDrawerState == .closed && self.animator.isReversed == false {
-//
-//                    self.drawerInfo.drawerContentVC.view.layoutIfNeeded()
-//                    if let scrollView = self.drawerInfo.embeddedScrollView {
-//                        switch self.drawerInfo.openedAutoScrollType {
-//                        case .top:
-//                            scrollView.scrollToTop(animated: false)
-//                        case .bottom:
-//                            scrollView.scrollToBottom(animated: false)
-//                        default:
-//                            break
-//                        }
-//                    }
-//
-//
-//                    self.currentDrawerState = .open
-//                    self.delegate?.drawerOpened()
-//            }
-//
-//                //                    self.delegate?.secondaryActionTriggered(for: self.secondaryText)
-//            } else {
-//                print("🛑Shit was cancled")
-//
-//            }
-            
-            
-            
-//            self.drawerView.superview?.layoutIfNeeded()
-//        }
+                
+        // So terrible!! 😤 https://stackoverflow.com/a/49997475/9605061
+        // Should switch to block based and do Swift ugh
+        animator.addObserver(self, forKeyPath: "running", options: [.new, .old], context: nil)
     }
+    
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    
+        if let newValue = change?[.newKey] as? Bool, newValue {
+            print(" !!! observeValue - reloading")
+//            self.drawerInfo.drawerContentVC.view.setNeedsLayout()
+        }
+        
+        print(" !!! observeValue(running is now): \(change![.newKey] as? Bool ?? false)")
+
+    }
+    
+    deinit {
+        animator.removeObserver(self, forKeyPath: "running", context: nil)
+     }
 }
