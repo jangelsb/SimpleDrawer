@@ -27,16 +27,18 @@ public struct SimpleDrawerInfo {
     
     var drawerInVC: UIViewController
     var drawerContentVC: UIViewController
+    var drawerOnTopOfView: UIView
     var drawerHandleView: UIView
     
     var embeddedScrollView: UIScrollView?
     var closedAutoScrollType: AutoScrollType
     var openedAutoScrollType: AutoScrollType
 
-    public init(drawerInVC: UIViewController, drawerContentVC: UIViewController, drawerHandleView: UIView, embeddedScrollView: UIScrollView?, closedAutoScrollType: AutoScrollType = .none, openedAutoScrollType: AutoScrollType = .none) {
+    public init(drawerInVC: UIViewController, drawerContentVC: UIViewController, drawerHandleView: UIView, drawerOnTopOfView: UIView, embeddedScrollView: UIScrollView?, closedAutoScrollType: AutoScrollType = .none, openedAutoScrollType: AutoScrollType = .none) {
         self.drawerInVC = drawerInVC
         self.drawerContentVC = drawerContentVC
         self.drawerHandleView = drawerHandleView
+        self.drawerOnTopOfView = drawerOnTopOfView
         self.embeddedScrollView = embeddedScrollView
         self.closedAutoScrollType = closedAutoScrollType
         self.openedAutoScrollType = openedAutoScrollType
@@ -55,8 +57,8 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     var innerScrollPanGR: UIPanGestureRecognizer?
         
         
-    var drawerCloseConstraint: NSLayoutConstraint!
-    var drawerOpenConstraint: NSLayoutConstraint!
+    var drawerCloseConstraints: [NSLayoutConstraint] = []
+    var drawerOpenConstraints: [NSLayoutConstraint] = []
     
     var animator: UIViewPropertyAnimator!
 
@@ -148,51 +150,82 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
         self.drawerInfo.drawerContentVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             // width
-            NSLayoutConstraint(item: self.drawerInfo.drawerContentVC.view!, attribute: .width, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .width, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: self.drawerInfo.drawerContentVC.view!, attribute: .width, relatedBy: .equal, toItem: self.drawerView, attribute: .width, multiplier: 1.0, constant: 0.0),
             
             // height
             NSLayoutConstraint(item: self.drawerInfo.drawerContentVC.view!, attribute: .height, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .height, multiplier: 1.0, constant: 0.0),
             
             // leading
-
             NSLayoutConstraint(item: self.drawerInfo.drawerContentVC.view!, attribute: .leading, relatedBy: .equal, toItem: self.drawerView, attribute: .leading, multiplier: 1.0, constant: 0.0),
         ])
         
+        
         self.drawerInfo.drawerHandleView.translatesAutoresizingMaskIntoConstraints = false
+        // bottom
+        let handleViewCloseConstraint = NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .bottom, relatedBy: .equal, toItem: self.drawerInfo.drawerOnTopOfView, attribute: .top, multiplier: 1.0, constant: -8.0)
+
         NSLayoutConstraint.activate([
+//
+//            // width
+//            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .width, relatedBy: .equal, toItem: self.drawerView, attribute: .width, multiplier: 1.0, constant: 0.0),
+//
+//            // height
+//            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: self.drawerInfo.drawerHandleView.frame.height),
             
-            // width
-            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .width, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .width, multiplier: 1.0, constant: 0.0),
             
-            // height
-            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: self.drawerInfo.drawerHandleView.frame.height),
             
             // leading
             NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .leading, relatedBy: .equal, toItem: self.drawerView, attribute: .leading, multiplier: 1.0, constant: 0.0),
             
+            // trailing
+            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .trailing, relatedBy: .equal, toItem: self.drawerView, attribute: .trailing, multiplier: 1.0, constant: 0.0),
+            
             // top
-            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .top, relatedBy: .equal, toItem: self.drawerInfo.drawerContentVC.view, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .top, relatedBy: .equal, toItem: self.drawerInfo.drawerContentVC.view, attribute: .bottom, multiplier: 1.0, constant: 0.0),
+            
 
         ])
+        
         
         self.drawerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             
             // width
-            NSLayoutConstraint(item: self.drawerView!, attribute: .width, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .width, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: self.drawerView!, attribute: .width, relatedBy: .equal, toItem: self.drawerInfo.drawerOnTopOfView, attribute: .width, multiplier: 1.0, constant: 0.0),
             
             // height
             NSLayoutConstraint(item: self.drawerView!, attribute: .top, relatedBy: .equal, toItem: self.drawerInfo.drawerContentVC.view, attribute: .top, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: self.drawerView!, attribute: .bottom, relatedBy: .equal, toItem: self.drawerInfo.drawerHandleView, attribute: .bottom, multiplier: 1.0, constant: 0.0),
+            
+            // leading
+            NSLayoutConstraint(item: self.drawerView!, attribute: .leading, relatedBy: .equal, toItem: self.drawerInfo.drawerOnTopOfView, attribute: .leading, multiplier: 1.0, constant: 0.0),
         ])
         
         
-        drawerCloseConstraint = NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .top, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .top, multiplier: 1.0, constant: handleOriginY)
-        
-        drawerOpenConstraint = NSLayoutConstraint(item: self.drawerInfo.drawerContentVC.view!, attribute: .top, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .top, multiplier: 1.0, constant: 0.0)
+        // drawer handle is at the top
+        drawerCloseConstraints = [
+            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .top, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .top, multiplier: 1.0, constant: handleOriginY),
+            handleViewCloseConstraint
+        ]
 
+        NSLayoutConstraint.activate(drawerCloseConstraints)
         
-        NSLayoutConstraint.activate([drawerCloseConstraint])
+        self.drawerView.setNeedsLayout()
+        self.drawerView.superview?.layoutIfNeeded()
+        
+        
+        self.drawerInfo.drawerContentVC.view.alpha = 1.0
+        
+        // this is here after it is laid out so that height has been defined
+        // drawer content is at the top
+        drawerOpenConstraints = [
+            NSLayoutConstraint(item: self.drawerInfo.drawerContentVC.view!, attribute: .top, relatedBy: .equal, toItem: self.drawerInfo.drawerInVC.view, attribute: .top, multiplier: 1.0, constant: 0.0),
+                        
+            // height
+            NSLayoutConstraint(item: self.drawerInfo.drawerHandleView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: self.drawerInfo.drawerHandleView.frame.height),
+
+        ]
+
         
         makePropertyAnimator()
 
@@ -517,13 +550,12 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     
     
     func openDrawerConstraints() {
-        NSLayoutConstraint.deactivate([
-            self.drawerCloseConstraint
-        ])
+        NSLayoutConstraint.deactivate(self.drawerCloseConstraints)
         
-        NSLayoutConstraint.activate([
-            self.drawerOpenConstraint
-        ])
+        NSLayoutConstraint.activate(self.drawerOpenConstraints)
+        
+        self.drawerInfo.drawerContentVC.view.alpha = 1.0
+//        self.drawerInfo.drawerHandleView.alpha = 0.0
 
         self.drawerInfo.drawerContentVC.setNeedsStatusBarAppearanceUpdate()
         self.drawerInfo.drawerContentVC.view.setNeedsLayout()
@@ -531,13 +563,9 @@ public class SimpleDrawer: NSObject, UIGestureRecognizerDelegate {
     }
     
     public func closeDrawerConstraints() {
-        NSLayoutConstraint.deactivate([
-            self.drawerOpenConstraint
-        ])
+        NSLayoutConstraint.deactivate(self.drawerOpenConstraints)
         
-        NSLayoutConstraint.activate([
-            self.drawerCloseConstraint
-        ])
+        NSLayoutConstraint.activate(self.drawerCloseConstraints)
 
         self.drawerInfo.drawerContentVC.view.setNeedsLayout()
         self.drawerView.superview?.layoutIfNeeded()
